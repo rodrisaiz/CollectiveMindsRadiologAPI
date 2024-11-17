@@ -2,22 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subject>
- */
 class SubjectFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Subject::class;
+
+    public function definition()
     {
         return [
-            //
+            'email' => $this->faker->unique()->email,
+            'first_name' => $this->faker->word, 
+            'last_name' => $this->faker->word,
         ];
     }
 }
