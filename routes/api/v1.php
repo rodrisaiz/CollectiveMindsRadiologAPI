@@ -5,6 +5,21 @@ use App\Http\V1\Controllers\SubjectController;
 use App\Http\V1\Controllers\SubjectsInProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+
+//Create newUser -> Only for propouse of demostration
+Route::post('create/newUser', function () {
+    $user = User::create([
+        'name' => 'CollectiveMindsClient',
+        'email' => 'rodrisaiz@icloud.com',
+        'password' => bcrypt('CollectiveMinds2024'), 
+    ]);
+
+    $token = $user->createToken('CollectiveMindsClient')->plainTextToken;
+
+    return response()->json(['token' => $token], 201);
+});
+
 
 //Subjects
 Route::resource('subject', SubjectController::class)->only(
