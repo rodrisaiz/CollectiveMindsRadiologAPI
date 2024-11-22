@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Clonar el repositorio
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.1.0
 
     - name: Desplegar al servidor
       uses: appleboy/ssh-action@v0.1.2
