@@ -1,4 +1,4 @@
-name: Deploy Laravel
+name: CollectiMinds Deploy
 
 on:
   push:
@@ -13,16 +13,15 @@ jobs:
     - name: Clonar el repositorio
       uses: actions/checkout@v2
 
-    - name: Configurar PHP
-      uses: shivammathur/setup-php@v2
+    - name: Desplegar al servidor
+      uses: appleboy/ssh-action@v0.1.2
       with:
-        php-version: '8.3'
-
-    - name: Instalar dependencias
-      run: composer install
-
-    - name: Ejecutar migraciones
-      run: php artisan migrate --force
-
-    - name: Limpiar caché
-      run: php artisan config:cache
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_KEY }}
+        script: |
+          cd /var/www/CollectiveMindsRadiologAPI
+          git pull origin main
+          composer install
+          php artisan migrate --force
+          php artisan config:cache
