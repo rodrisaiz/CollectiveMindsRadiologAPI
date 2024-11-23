@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Log;
+use App\Http\V2\Events\SubjectEvent;
+
 
 
 class SubjectsInProjectsController extends Controller
@@ -18,7 +20,7 @@ class SubjectsInProjectsController extends Controller
 
             $subject->projects()->attach($project);
             $subject->load('projects');
-
+            event(new SubjectEvent($subject, 'Subject enroll in a project'));
             return response()->json([
                 'message' => 'Subject assigned to project successfully',
                 'subject' => $subject,

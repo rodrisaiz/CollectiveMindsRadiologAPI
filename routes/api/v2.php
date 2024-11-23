@@ -43,6 +43,9 @@ Route::resource('project', ProjectController::class)->only([
 
 Route::get('project/name/{name}', [ProjectController::class, 'showByName'])->middleware('auth:sanctum');
 
+//Assigment of subjects to projects
+Route::post('enroll/{subjectId}/{projectId}', [SubjectsInProjectsController::class, 'enroll'])->middleware('auth:sanctum');
+
 //Webhooks
 Route::prefix('webhooks')->group(function () {
     Route::resource('subject', WebhookController::class)->only(
