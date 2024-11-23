@@ -1,0 +1,27 @@
+name: CollectiMinds Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3.1.0
+
+    - name: Desplegar al servidor
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_KEY }}
+        script: |
+          cd /var/www/CollectiveMindsRadiologAPI
+          git pull origin main
+          composer install
+          php artisan migrate --force
+          php artisan config:cache
