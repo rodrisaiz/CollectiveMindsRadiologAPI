@@ -6,6 +6,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Http\V2\Events\SubjectEvent;
 use Illuminate\Support\Facades\Http;
+use App\Models\Webhook;
+use Illuminate\Support\Facades\Log;
 
 class SendSubjectWebhook
 {
@@ -15,9 +17,14 @@ class SendSubjectWebhook
         $subject = $event->subject;
         $action = $event->action;
 
-        $webhookUrl = config('services.webhook.subject');
+         $webhook = Webhook::where('type', 'subject')->first();
 
-        Http::post($webhookUrl, [
+         if (!$webhook || !$webhook->url) {
+             Log::error('No se encontró un webhook configurado para el tipo "subject".');
+             return;
+         }
+
+        Http::post($webhook->url, [
             'action' => $action, 
             'id' => $subject->id,
         ]);
