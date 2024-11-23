@@ -21,7 +21,7 @@ jobs:
         key: ${{ secrets.SERVER_KEY }}
         script: |
           cd /var/www/CollectiveMindsRadiologAPI
-          git pull origin main
+          git fetch origin main && git pull origin main
           composer install
           php artisan migrate --force
           php artisan config:cache
