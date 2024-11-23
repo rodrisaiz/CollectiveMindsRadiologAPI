@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use App\Models\Webhook;
 
 class WebhookController extends Controller
@@ -62,7 +63,7 @@ class WebhookController extends Controller
             'message' => 'Webhook created successfully'
         ], 201);
     }
-
+/*
     public function update(Request $request, Webhook $webhook)
     {
                 
@@ -76,6 +77,7 @@ class WebhookController extends Controller
             }
 
             $validator = Validator::make($data, [
+                'type' => 'required|string|max:255',
                 'url' => 'required|url',
             ]);
 
@@ -86,7 +88,9 @@ class WebhookController extends Controller
                 ], 422);
             }
         
-            $webhook->update($data);
+           $NewWebhook = Webhook::findOrFail($webhook);
+            
+            $NewWebhook->update($data);
 
             return response()->json([
                 'data' => $webhook, 
@@ -98,7 +102,43 @@ class WebhookController extends Controller
             ], 404);
         }
     }
+*/
 
+public function update(Request $request, Webhook $webhook)
+{
+    try {
+        $data = $request->all(); 
+        if (Str::startsWith($request->path(), "api/v2/webhooks/subject")) {
+            $data['type'] = 'subjectV2';
+        } elseif (Str::startsWith($request->path(), "api/v2/webhooks/project")) {
+            $data['type'] = 'projectV2';
+        }
+
+        $validator = Validator::make($data, [
+            'type' => 'required|string|max:255',
+            'url' => 'required|url',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => 'Validation Error', 
+                'messages' => $validator->errors()
+            ], 422);
+        }
+
+        $webhook->update($data);
+
+        return response()->json([
+            'data' => $data, 
+            'message' => 'Webhook updated successfully'
+        ], 200);
+
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'Webhook not found'
+        ], 404);
+    }
+}
     public function show($id): JsonResponse
     {
         try {

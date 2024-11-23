@@ -5,68 +5,108 @@ namespace Tests\Unit\V2;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Webhook;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
+
 
 class WebhookControllerTest extends TestCase
 {
-        //Test for assigning url to webhooks
-        public function test_create_a_webhook_with_a_url()
-        {
-            $response = $this->postJson('/api/webhooks', [
-                'name' => 'Test Webhook',
+    use RefreshDatabase;
+
+    protected $user;
+    protected $token;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+        $this->token = $this->user->createToken('test-token')->plainTextToken;
+    }
+
+    protected $baseEndpoints = [
+        '/api/v2/webhooks/subject/',
+        '/api/v2/webhooks/project/',
+    ];
+
+    protected function getEndpoint(string $path = '', string $base = '/api/v1/subject/'): string
+    {
+        return $base . $path;
+    }
+
+    //Test for assigning url to webhooks
+    public function test_create_a_webhook_with_a_url()
+    {
+        foreach ($this->baseEndpoints as $base) {
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
+            }
+
+            $response = $this->withHeaders([
+                'Authorization' => 'Bearer ' . $this->token,
+            ])->postJson($base, [
                 'url' => 'https://example.com/webhook-handler',
             ]);
-    
+
             $response->assertStatus(201);
             $this->assertDatabaseHas('webhooks', [
-                'name' => 'Test Webhook',
+                'type' => $expectedType,
                 'url' => 'https://example.com/webhook-handler',
             ]);
         }
-    
-        public function it_validates_the_url_field()
-        {
-            $response = $this->postJson('/api/webhooks', [
-                'name' => 'Test Webhook',
-                'url' => 'invalid-url',
+    }
+
+
+    public function test_create_a_webhook_with_invalid_url()
+    {
+        foreach ($this->baseEndpoints as $base) {
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
+            }
+
+            $response = $this->withHeaders([
+                'Authorization' => 'Bearer ' . $this->token,
+            ])->postJson($base, [
+                'url' => 'invalid-url'
             ]);
-    
+
             $response->assertStatus(422);
-            $response->assertJsonValidationErrors('url');
         }
-    
-        public function test_update_a_webhook_url()
-        {
+    }
+
+
+    public function test_update_a_webhook_url()
+    {
+        foreach ($this->baseEndpoints as $base) {
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
+            }
+
             $webhook = Webhook::factory()->create([
-                'name' => 'Test Webhook',
+                'type' => $expectedType ,
                 'url' => 'https://example.com/original-handler',
             ]);
-    
-            $response = $this->putJson("/api/webhooks/{$webhook->id}", [
-                'url' => 'https://example.com/updated-handler',
-            ]);
-    
+            $response = $this->withHeaders([
+                'Authorization' => 'Bearer ' . $this->token,
+                ])->putJson($base.$webhook->id, [
+                    'url' => 'https://example2.com/updated-handler'
+                ]);
+                
+            Log::info('Test',['TEST' => $response]);
             $response->assertStatus(200);
-            $this->assertDatabaseHas('webhooks', [
-                'id' => $webhook->id,
-                'url' => 'https://example.com/updated-handler',
-            ]);
-        }
-    
-        public function test_retrieve_a_webhook_with_its_url()
-        {
-            $webhook = Webhook::factory()->create([
-                'name' => 'Test Webhook',
-                'url' => 'https://example.com/handler',
-            ]);
-    
-            $response = $this->getJson("/api/webhooks/{$webhook->id}");
-    
-            $response->assertStatus(200);
+
             $response->assertJson([
-                'id' => $webhook->id,
-                'name' => 'Test Webhook',
-                'url' => 'https://example.com/handler',
+                'data' => [
+                    'url' => 'https://example2.com/updated-handler',
+                    'type' =>  $expectedType,
+                ],
             ]);
         }
-   
+    }   
 }

@@ -37,12 +37,13 @@ Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->
 Route::get('subject/test', [SubjectController::class, 'test']);
 
 //Webhooks
-Route::resource('webhooks/subject/', WebhookController::class)->only(
-    'index', 'store', 'show', 'update', 'destroy'
-)->middleware('auth:sanctum');
+Route::prefix('webhooks')->group(function () {
+    Route::resource('subject', WebhookController::class)->only(
+        'index', 'store', 'update', 'destroy'
+    )->middleware('auth:sanctum');
 
 
-Route::resource('webhooks/project/', WebhookController::class)->only(
-    'index', 'store', 'show', 'update', 'destroy'
-)->middleware('auth:sanctum');
-
+    Route::resource('project', WebhookController::class)->only(
+        'index', 'store', 'update', 'destroy'
+    )->middleware('auth:sanctum');
+});
