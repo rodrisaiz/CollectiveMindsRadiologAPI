@@ -13,6 +13,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SubjectControllerTest extends TestCase
 {
+    protected $baseEndpoint = '/api/v1/subject/';
+
+    protected function getEndpoint(string $path = ''): string
+    {
+        return $this->baseEndpoint . $path;
+    }
 
    use RefreshDatabase;
 
@@ -34,7 +40,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/subject');
+        ])->getJson($this->getEndpoint());
 
         $response->assertStatus(200)
                  ->assertJsonStructure([
@@ -55,7 +61,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/subject', $data);
+        ])->postJson($this->getEndpoint(), $data);
 
         $response->assertStatus(201)
                  ->assertJson([
@@ -80,7 +86,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/subject', $data);
+        ])->postJson($this->getEndpoint(), $data);
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -98,7 +104,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/subject/'. $subject->id);
+        ])->getJson($this->getEndpoint(). $subject->id);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -117,7 +123,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/subject/'. 1000);
+        ])->getJson($this->getEndpoint(). 1000);
 
         $response->assertStatus(404)
                  ->assertJson([
@@ -132,7 +138,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/subject/email/'. $subject->email);
+        ])->getJson($this->getEndpoint().'email/'. $subject->email);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -155,7 +161,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/subject/email/'. "rodrisaiz@icloud.com");
+        ])->getJson($this->getEndpoint().'email/'. "rodrisaiz@icloud.com");
 
         $response->assertStatus(404)
                  ->assertJson([
@@ -179,7 +185,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->putJson('/api/v1/subject/' . $subject->id, $data);
+        ])->putJson($this->getEndpoint() . $subject->id, $data);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -205,7 +211,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->putJson('/api/v1/subject/' . $subject->id, $data);
+        ])->putJson($this->getEndpoint() . $subject->id, $data);
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -224,7 +230,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->deleteJson('/api/v1/subject/'. $subject->id);
+        ])->deleteJson($this->getEndpoint(). $subject->id);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -238,7 +244,7 @@ class SubjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->deleteJson('/api/v1/subject/'. 1000);
+        ])->deleteJson($this->getEndpoint(). 1000);
 
         $response->assertStatus(404)
                  ->assertJson([
