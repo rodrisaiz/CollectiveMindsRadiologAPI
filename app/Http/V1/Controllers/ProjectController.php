@@ -12,16 +12,16 @@ class ProjectController extends Controller
 {
     public function index(): JsonResponse
     {
-        try {
-            $projects = Project::all();
+        $projects = Project::all();
+    
+        if(!$projects->isEmpty()){
+        return response()->json([
+            'data' => $projects
+        ], 200);
+        }else{
             return response()->json([
-                'data' => $projects
+                'data' => 'There are not projects'
             ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Error retrieving projects', 
-                'message' => $e->getMessage()
-            ], 500);
         }
     }
 

@@ -6,15 +6,19 @@ use App\Http\V1\Controllers\SubjectsInProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 //Create newUser -> Only for propouse of demostration
 Route::post('Cr34t3/n3wUs3r', function () {
-    $user = User::create([
-        'name' => 'CollectiveMindsClient',
-        'email' => 'rodrisaiz@icloud.com',
-        'password' => bcrypt('CollectiveMinds2024'), 
-    ]);
+    $user = User::firstOrCreate(
+        ['email' => 'rodrisaiz@icloud.com'],
+        [
+            'name' => 'CollectiveMindsClient',
+            'password' => Hash::make('CollectiveMinds2024'),
+        ]
+    );
 
+    $user->tokens()->where('name', 'CollectiveMindsClient')->delete();
     $token = $user->createToken('CollectiveMindsClient')->plainTextToken;
 
     return response()->json(['token' => $token], 201);

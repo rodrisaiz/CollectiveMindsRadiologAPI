@@ -12,16 +12,16 @@ class SubjectController extends Controller
 {
     public function index(): JsonResponse
     {
-        try {
-            $subjects = Subject::with('projects')->get();
+        $subjects = Subject::with('projects')->get();
+
+        if(!$subjects->isEmpty()){
+        return response()->json([
+            'data' => $subjects
+        ], 200);
+        }else{
             return response()->json([
-                'data' => $subjects
+                'data' => 'There are not subjects'
             ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Error retrieving subjects', 
-                'message' => $e->getMessage()
-            ], 500);
         }
     }
 
@@ -78,7 +78,7 @@ class SubjectController extends Controller
     {
         try {
             $subject = Subject::where('email', $email)->get();
-
+            $subject->load('projects');
             if(!$subject->isEmpty()){
                 return response()->json([
                     'data' => $subject
