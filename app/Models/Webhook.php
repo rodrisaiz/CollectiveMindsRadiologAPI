@@ -9,5 +9,5 @@ class Webhook extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'type', 'url'];
+    protected $fillable = ['type', 'url'];
 }

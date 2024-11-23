@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('webhooks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('type')->unique();
             $table->string('url');
             $table->timestamps();

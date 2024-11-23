@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\V2\Controllers\WebhookController;
 
 
 
@@ -34,3 +35,14 @@ Route::resource('subject', SubjectController::class)->only(
 
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
 Route::get('subject/test', [SubjectController::class, 'test']);
+
+//Webhooks
+Route::resource('webhooks/subject/', WebhookController::class)->only(
+    'index', 'store', 'show', 'update', 'destroy'
+)->middleware('auth:sanctum');
+
+
+Route::resource('webhooks/project/', WebhookController::class)->only(
+    'index', 'store', 'show', 'update', 'destroy'
+)->middleware('auth:sanctum');
+

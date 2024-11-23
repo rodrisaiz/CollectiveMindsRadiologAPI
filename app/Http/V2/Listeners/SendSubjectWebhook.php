@@ -17,7 +17,7 @@ class SendSubjectWebhook
         $subject = $event->subject;
         $action = $event->action;
 
-         $webhook = Webhook::where('type', 'subject')->first();
+         $webhook = Webhook::where('type', 'subjectV2')->first();
 
          if (!$webhook || !$webhook->url) {
              Log::error('No se encontró un webhook configurado para el tipo "subject".');
