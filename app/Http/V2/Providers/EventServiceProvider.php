@@ -10,6 +10,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Http\V2\Events\SubjectEvent::class => [
             \App\Http\V2\Listeners\SendSubjectWebhook::class,
         ],
+        \App\Http\V2\Events\ProjectEvent::class => [
+            \App\Http\V2\Listeners\SendProjectWebhook::class,
+        ],
     ];
 
     public function boot()

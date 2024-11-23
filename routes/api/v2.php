@@ -36,6 +36,13 @@ Route::resource('subject', SubjectController::class)->only(
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
 Route::get('subject/test', [SubjectController::class, 'test']);
 
+//Projects
+Route::resource('project', ProjectController::class)->only([
+    'index', 'store', 'show', 'update'
+])->middleware('auth:sanctum');
+
+Route::get('project/name/{name}', [ProjectController::class, 'showByName'])->middleware('auth:sanctum');
+
 //Webhooks
 Route::prefix('webhooks')->group(function () {
     Route::resource('subject', WebhookController::class)->only(
