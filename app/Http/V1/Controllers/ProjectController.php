@@ -3,12 +3,13 @@
 namespace App\Http\V1\Controllers;
 
 use App\Models\Project;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use App\Http\V2\Events\ProjectEvent;
-
+use App\Models\Webhook;
 
 class ProjectController extends Controller
 {
@@ -43,8 +44,7 @@ class ProjectController extends Controller
 
         try {
             $project = Project::create($request->all());
-            $action = "Created project";
-            event(new ProjectEvent($project, $action));
+            event(new ProjectEvent($project, 'Created project'));
             return response()->json([
                 'data' => $project, 
                 'message' => 'Project created successfully'
@@ -118,8 +118,8 @@ class ProjectController extends Controller
         try {
             $project = Project::findOrFail($id);
             $project->update($request->all());
-            $action = "Updated project";
-            event(new ProjectEvent($project, $action));
+
+            event(new ProjectEvent($project, 'Updated project'));
             return response()->json([
                 'data' => $project, 
                 'message' => 'Project updated successfully'

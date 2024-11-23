@@ -14,6 +14,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Http\V2\Listeners\SendProjectWebhook::class,
         ],
     ];
+    
 
     public function boot()
     {

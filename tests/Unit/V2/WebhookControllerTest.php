@@ -98,7 +98,6 @@ class WebhookControllerTest extends TestCase
                     'url' => 'https://example2.com/updated-handler'
                 ]);
                 
-            Log::info('Test',['TEST' => $response]);
             $response->assertStatus(200);
 
             $response->assertJson([

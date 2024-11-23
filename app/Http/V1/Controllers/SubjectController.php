@@ -43,8 +43,7 @@ class SubjectController extends Controller
 
         try {
             $subject = Subject::create($request->all());
-            $action = "create subject";
-            event(new SubjectEvent($subject, $action));
+            event(new SubjectEvent($subject, 'Created subject'));
             return response()->json([
                 'data' => $subject, 
                 'message' => 'Subject created successfully'
@@ -120,8 +119,7 @@ class SubjectController extends Controller
         try {
             $subject = Subject::findOrFail($id);
             $subject->update($request->all());
-            $action = "update subject";
-            event(new SubjectEvent($subject, $action));
+            event(new SubjectEvent($subject, 'Updated subject'));
             return response()->json([
                 'data' => $subject, 
                 'message' => 'Subject updated successfully'
@@ -142,8 +140,7 @@ class SubjectController extends Controller
     {
         try {
             $subject = Subject::findOrFail($id);
-            $action = "delete subject";
-            event(new SubjectEvent($subject, $action));
+            event(new SubjectEvent($subject, 'Deleted subject'));
             $subject->delete();
             return response()->json([
                 'message' => 'Subject deleted successfully'
