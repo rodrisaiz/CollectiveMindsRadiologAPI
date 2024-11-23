@@ -26,12 +26,10 @@ class SubjectControllerTest extends V1SubjectControllerTest
     {
         $webhookUrl = 'https://example.com/webhook';
 
-        // Configura una fake para simular la respuesta HTTP
         \Http::fake();
 
         $subject = Subject::factory()->create();
-
-        event(new \App\Events\SubjectEvent($subject));
+        event(new \App\Http\V2\Events\SubjectEvent($subject));
 
         \Http::assertSent(function ($request) use ($webhookUrl, $subject) {
             return $request->url() === $webhookUrl &&
