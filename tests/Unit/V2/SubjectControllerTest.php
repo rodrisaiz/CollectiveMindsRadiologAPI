@@ -24,8 +24,9 @@ class SubjectControllerTest extends V1SubjectControllerTest
 
     public function test_webhook_subject_created()
     {
-        $webhookUrl = 'https://example.com/webhook';
-
+        //$webhookUrl = 'https://example.com/webhook';
+        $webhookUrl = config('services.webhook.subject');
+        
         \Http::fake();
 
         $subject = Subject::factory()->create();

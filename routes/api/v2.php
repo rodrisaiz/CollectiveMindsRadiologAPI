@@ -34,8 +34,3 @@ Route::resource('subject', SubjectController::class)->only(
 
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
 Route::get('subject/test', [SubjectController::class, 'test']);
-
-Route::get('subject/test2', function(){
-    return "Hello from the other side";
-});
-

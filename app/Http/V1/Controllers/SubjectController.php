@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use App\Http\V2\Events\SubjectEvent;
 
 class SubjectController extends Controller
 {
@@ -42,6 +43,7 @@ class SubjectController extends Controller
 
         try {
             $subject = Subject::create($request->all());
+            event(new SubjectEvent($subject));
             return response()->json([
                 'data' => $subject, 
                 'message' => 'Subject created successfully'
@@ -117,6 +119,7 @@ class SubjectController extends Controller
         try {
             $subject = Subject::findOrFail($id);
             $subject->update($request->all());
+            event(new SubjectEvent($subject));
             return response()->json([
                 'data' => $subject, 
                 'message' => 'Subject updated successfully'
@@ -137,6 +140,7 @@ class SubjectController extends Controller
     {
         try {
             $subject = Subject::findOrFail($id);
+            event(new SubjectEvent($subject));
             $subject->delete();
             return response()->json([
                 'message' => 'Subject deleted successfully'

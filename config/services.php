@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'webhook' => [
+        'subject' => env('SUBJECT_WEBHOOK_URL', 'https://webhook.site/0c4fa1ab-5801-4d48-bed4-b2ba25a7aaf3'),
+    ],
 
 ];
