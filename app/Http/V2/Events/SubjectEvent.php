@@ -11,9 +11,11 @@ class SubjectEvent
     use Dispatchable, SerializesModels;
 
     public $subject;
+    public $action;
 
-    public function __construct(Subject $subject)
+    public function __construct(Subject $subject, $action)
     {
         $this->subject = $subject;
+        $this->action = $action;
     }
 }

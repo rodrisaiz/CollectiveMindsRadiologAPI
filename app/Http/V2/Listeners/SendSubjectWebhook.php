@@ -13,10 +13,12 @@ class SendSubjectWebhook
     public function handle(SubjectEvent $event)
     {
         $subject = $event->subject;
+        $action = $event->action;
 
         $webhookUrl = config('services.webhook.subject');
 
         Http::post($webhookUrl, [
+            'action' => $action, 
             'id' => $subject->id,
         ]);
     }
