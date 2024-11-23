@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
 //Create newUser -> Only for propouse of demostration
-Route::post('create/newUser', function () {
+Route::post('Cr34t3/n3wUs3r', function () {
     $user = User::create([
         'name' => 'CollectiveMindsClient',
         'email' => 'rodrisaiz@icloud.com',
