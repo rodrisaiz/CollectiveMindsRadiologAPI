@@ -50,21 +50,28 @@ class SubjectController
     {   
         $foundedSubject = $this->FoundSubjectById->execute($id);
 
-        return response()->json([
-            'data' => [
-                'id' => $foundedSubject->getId(),
-                'email' => $foundedSubject->getEmail(),
-                'first_name' => $foundedSubject->getFirstName(),
-                'last_name' => $foundedSubject->getLastName(),
-            ],
-        ], 200);    
+        if(!empty($foundedSubject)){
+                return response()->json([
+                'data' => [
+                    'id' => $foundedSubject->getId(),
+                    'email' => $foundedSubject->getEmail(),
+                    'first_name' => $foundedSubject->getFirstName(),
+                    'last_name' => $foundedSubject->getLastName(),
+                ],
+            ], 200);    
+        }else{
+            return response()->json([
+                'message' => 'This subject does not exist',
+            ], 200);    
+        }
     }
 
     public function showByEmail($email): JsonResponse
     {   
         $foundedSubject = $this->FoundSubjectByEmail->execute($email);
 
-        return response()->json([
+        if(!empty($foundedSubject)){
+            return response()->json([
             'data' => [
                 'id' => $foundedSubject->getId(),
                 'email' => $foundedSubject->getEmail(),
@@ -72,6 +79,12 @@ class SubjectController
                 'last_name' => $foundedSubject->getLastName(),
             ],
         ], 200);    
+        }else{
+            return response()->json([
+                'message' => 'This subject does not exist',
+            ], 200);    
+        }
+
     }
     
     public function store(Request $request): JsonResponse

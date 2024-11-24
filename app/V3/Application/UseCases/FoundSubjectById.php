@@ -15,7 +15,7 @@ class FoundSubjectById
         $this->repository = $repository;
     }
 
-    public function execute(int $id): Subject
+    public function execute(int $id): ?Subject
     {
         return $this->repository->findById($id);
     }

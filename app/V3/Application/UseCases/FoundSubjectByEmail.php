@@ -15,7 +15,7 @@ class FoundSubjectByEmail
         $this->repository = $repository;
     }
 
-    public function execute(string $email): Subject
+    public function execute(string $email): ?Subject
     {
         return $this->repository->findByEmail($email);
     }
