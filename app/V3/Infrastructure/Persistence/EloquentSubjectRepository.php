@@ -14,11 +14,7 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
     {
         $subjectModels = EloquentSubject::all();
 
-        Log::info('Subjects fetched from database', ['count' => $subjectModels->count()]);
-
         $latValue = $subjectModels->map(fn ($model) => $this->toDomain($model))->toArray();
-
-        Log::info('Subjects PRE SEND ', ['all' => $latValue]);
 
         return $latValue;
     }

@@ -33,14 +33,12 @@ class CreateSubject
         );
         
         $this->repository->save($subject);
-        
-        Log::info(['Subject' =>  $subject]);
-       
+               
         $value = $this->repository->findByEmail($email);
 
         $id = $value->getId(); 
         $subject->setId($id); 
-        
+
         return $subject;
 
     }

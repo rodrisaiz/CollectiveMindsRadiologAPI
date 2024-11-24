@@ -36,6 +36,7 @@ return [
     ],
     'webhook' => [
         'subject' => env('SUBJECT_WEBHOOK_URL', 'https://webhook.site/0c4fa1ab-5801-4d48-bed4-b2ba25a7aaf3'),
+        'project' => env('PROJECT_WEBHOOK_URL', 'https://webhook.site/0c4fa1ab-5801-4d48-bed4-b2ba25a7aaf3'),
     ],
 
 ];

@@ -12,6 +12,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
+
 
 
 class SubjectController
@@ -84,12 +86,16 @@ class SubjectController
 
         if(!empty($foundedSubject)){
             return response()->json([
-            'data' => [
-                'id' => $foundedSubject->getId(),
-                'email' => $foundedSubject->getEmail(),
-                'first_name' => $foundedSubject->getFirstName(),
-                'last_name' => $foundedSubject->getLastName(),
-            ],
+                'data' => [
+                        [
+                           'id' => $foundedSubject->getId(),
+                            'email' => $foundedSubject->getEmail(),
+                            'first_name' => $foundedSubject->getFirstName(),
+                            'last_name' => $foundedSubject->getLastName(),
+                            "created_at" => $foundedSubject->getCreatedAt(),
+                            "updated_at" => $foundedSubject->getUpdatedAt(),
+                        ]
+                    ]
         ], 200);    
         }else{
             return response()->json([
@@ -148,16 +154,18 @@ class SubjectController
     public function update(Request $request, int $id): JsonResponse
     {
         $data = $request->validate([
-            'email' => 'sometimes|email',
-            'first_name' => 'sometimes|string',
-            'last_name' => 'sometimes|string',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('subjects')->ignore($id),
+            ],
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
         ]);
     
         try {
             $subject = $this->UpdateSubject->execute($id, $data);
-    
-            Log::info('Subject updated', ['subject' => $subject]);
-    
+        
             if ($subject->wasRecentlyCreated()) {
                 return response()->json([
                     'data' => [
@@ -186,7 +194,7 @@ class SubjectController
     public function destroy($id): JsonResponse
     {   
         $foundedSubject = $this->deleteSubject->execute($id);
-        Log::info(['foundedSubject' => $foundedSubject]);
+
         if(!empty($foundedSubject)){
             return response()->json([
                     'message' => 'Subject not found',

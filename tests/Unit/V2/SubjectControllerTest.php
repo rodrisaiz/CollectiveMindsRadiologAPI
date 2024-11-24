@@ -5,7 +5,7 @@ namespace Tests\Unit\V2;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Subject;
-
+use App\Models\Webhook;
 use Tests\Unit\V1\SubjectControllerTest as V1SubjectControllerTest;
 
 
@@ -32,6 +32,12 @@ class SubjectControllerTest extends V1SubjectControllerTest
         $subject = Subject::factory()->create();
         $action = "subject test created";
 
+        Webhook::factory()->create([
+                'type' => 'subjectV2',
+                'url' => 'https://example.com/webhook',
+        ]);
+
+
         event(new \App\V2\Events\SubjectEvent($subject, $action));
 
         \Http::assertSent(function ($request) use ($webhookUrl, $subject, $action) {
@@ -56,6 +62,11 @@ class SubjectControllerTest extends V1SubjectControllerTest
             'first_name' => 'Updated Name',
         ]);
 
+        Webhook::factory()->create([
+            'type' => 'subjectV2',
+            'url' => 'https://example.com/webhook',
+        ]);
+
         $action = "subject test updated";
         event(new \App\V2\Events\SubjectEvent($subject, $action));
 
@@ -75,6 +86,11 @@ class SubjectControllerTest extends V1SubjectControllerTest
 
         $subject = Subject::factory()->create([
             'first_name' => 'Original Name',
+        ]);
+
+        Webhook::factory()->create([
+            'type' => 'subjectV2',
+            'url' => 'https://example.com/webhook',
         ]);
 
         $action = "subject test deleted";
