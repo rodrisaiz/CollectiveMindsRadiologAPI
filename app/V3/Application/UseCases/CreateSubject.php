@@ -23,7 +23,7 @@ class CreateSubject
             return $existingSubject;
         }
     
-        $subject = new Subject($email, $firstName, $lastName);
+        $subject = new Subject(null, $email, $firstName, $lastName);
         $this->repository->save($subject);
         
         return $subject;

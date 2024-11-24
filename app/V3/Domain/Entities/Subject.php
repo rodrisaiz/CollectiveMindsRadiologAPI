@@ -4,16 +4,28 @@ namespace App\V3\Domain\Entities;
 
 class Subject
 {
+    private ?int $id;
     private string $email;
     private string $firstName;
     private string $lastName;
     private bool $wasRecentlyCreated = false;
 
-    public function __construct(string $email, string $firstName, string $lastName)
+    public function __construct(?int $id, string $email, string $firstName, string $lastName)
     {
+        $this->id = $id;
         $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getEmail(): string

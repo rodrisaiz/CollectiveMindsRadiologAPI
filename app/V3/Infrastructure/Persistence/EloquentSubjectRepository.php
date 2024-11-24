@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class EloquentSubjectRepository implements SubjectRepositoryInterface
 {
+
+    public function all(): array
+    {
+        $subjectModels = EloquentSubject::all();
+
+        Log::info('Subjects fetched from database', ['count' => $subjectModels->count()]);
+
+        $latValue = $subjectModels->map(fn ($model) => $this->toDomain($model))->toArray();
+
+        Log::info('Subjects PRE SEND ', ['all' => $latValue]);
+
+        return $latValue;
+    }
+
     public function findById(int $id): ?Subject
     {
         $subjectModel = EloquentSubject::find($id);
@@ -52,6 +66,6 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
 
     private function toDomain(EloquentSubject $model): Subject
     {
-        return new Subject($model->email, $model->first_name, $model->last_name);
+        return new Subject($model->id, $model->email, $model->first_name, $model->last_name);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\V3\Infrastructure\Http\Controllers;
 
 use App\V3\Application\UseCases\CreateSubject;
+use App\V3\Application\UseCases\AllSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -10,16 +11,32 @@ use Illuminate\Support\Facades\Log;
 class SubjectController
 {
     private CreateSubject $createSubject;
+    private AllSubject $AllSubject;
 
-    public function __construct(CreateSubject $createSubject)
+    public function __construct(CreateSubject $createSubject, AllSubject $AllSubject )
     {
         $this->createSubject = $createSubject;
+        $this->AllSubject = $AllSubject;
+    }
+
+    public function index(): JsonResponse
+    {   
+        $allSubjects = $this->AllSubject->execute();
+
+        return response()->json([
+            'data' => array_map(fn ($subject) => [
+                'id' => $subject->getId(),
+                'email' => $subject->getEmail(),
+                'first_name' => $subject->getFirstName(),
+                'last_name' => $subject->getLastName(),
+            ], $allSubjects),
+            'message' => count($allSubjects) > 0 ? 'These are all the subjects' : 'No subjects found',
+        ], 200);
+
     }
 
     public function store(Request $request): JsonResponse
-    {
-        Log::info('store');
-    
+    {    
         $data = $request->validate([
             'email' => 'required|email',
             'first_name' => 'required|string',
