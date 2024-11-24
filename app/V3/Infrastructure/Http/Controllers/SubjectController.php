@@ -6,6 +6,7 @@ use App\V3\Application\UseCases\CreateSubject;
 use App\V3\Application\UseCases\AllSubject;
 use App\V3\Application\UseCases\FoundSubjectById;
 use App\V3\Application\UseCases\FoundSubjectByEmail;
+use App\V3\Application\UseCases\UpdateSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,13 +17,15 @@ class SubjectController
     private AllSubject $AllSubject;
     private FoundSubjectById $FoundSubjectById;
     private FoundSubjectByEmail $FoundSubjectByEmail;
+    private UpdateSubject $UpdateSubject;
 
-    public function __construct(CreateSubject $createSubject, AllSubject $AllSubject, FoundSubjectById $FoundSubjectById, FoundSubjectByEmail $FoundSubjectByEmail)
+    public function __construct(CreateSubject $createSubject, AllSubject $AllSubject, FoundSubjectById $FoundSubjectById, FoundSubjectByEmail $FoundSubjectByEmail, UpdateSubject $UpdateSubject)
     {
         $this->createSubject = $createSubject;
         $this->AllSubject = $AllSubject;
         $this->FoundSubjectById = $FoundSubjectById;
         $this->FoundSubjectByEmail = $FoundSubjectByEmail;
+        $this->UpdateSubject = $UpdateSubject;
     }
 
     public function index(): JsonResponse
@@ -84,7 +87,6 @@ class SubjectController
                 'message' => 'This subject does not exist',
             ], 200);    
         }
-
     }
     
     public function store(Request $request): JsonResponse
@@ -111,8 +113,6 @@ class SubjectController
                     ],
                     'message' => 'Subject was created successfully '
                 ], 201);
-
-
             }
     
             return response()->json([
@@ -124,5 +124,41 @@ class SubjectController
             return response()->json(['error' => 'Unable to process the request'], 500);
         }
     }
+
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $data = $request->validate([
+            'email' => 'sometimes|email',
+            'first_name' => 'sometimes|string',
+            'last_name' => 'sometimes|string',
+        ]);
+    
+        try {
+            $subject = $this->UpdateSubject->execute($id, $data);
+    
+            Log::info('Subject updated', ['subject' => $subject]);
+    
+            if ($subject->wasRecentlyCreated()) {
+                return response()->json([
+                    'data' => [
+                        'email' => $subject->getEmail(),
+                        'first_name' => $subject->getFirstName(),
+                        'last_name' => $subject->getLastName(),
+                    ],
+                    'message' => 'Subject was updated successfully '
+                ], 201);
+            }
+    
+            return response()->json([
+                'message' => 'Email already exists'
+            ], 200);
+    
+        } catch (\Exception $e) {
+            Log::error('Error in update method', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Unable to process the request'], 500);
+        }
+    }
+
+
     
 }
