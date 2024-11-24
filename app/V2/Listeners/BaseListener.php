@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\V2\Listeners;
+namespace App\V2\Listeners;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +14,8 @@ class BaseListener
         $action = $event->action;
 
         $type = match(get_class($event)) {
-            'App\Http\V2\Events\ProjectEvent' => 'projectV2',
-            'App\Http\V2\Events\SubjectEvent' => 'subjectV2',
+            'App\V2\Events\ProjectEvent' => 'projectV2',
+            'App\V2\Events\SubjectEvent' => 'subjectV2',
             default => null,
         };
 

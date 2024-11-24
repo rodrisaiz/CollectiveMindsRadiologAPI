@@ -32,7 +32,7 @@ class SubjectControllerTest extends V1SubjectControllerTest
         $subject = Subject::factory()->create();
         $action = "subject test created";
 
-        event(new \App\Http\V2\Events\SubjectEvent($subject, $action));
+        event(new \App\V2\Events\SubjectEvent($subject, $action));
 
         \Http::assertSent(function ($request) use ($webhookUrl, $subject, $action) {
             return $request->url() === $webhookUrl &&
@@ -57,7 +57,7 @@ class SubjectControllerTest extends V1SubjectControllerTest
         ]);
 
         $action = "subject test updated";
-        event(new \App\Http\V2\Events\SubjectEvent($subject, $action));
+        event(new \App\V2\Events\SubjectEvent($subject, $action));
 
         \Http::assertSent(function ($request) use ($webhookUrl, $subject, $action) {
             return $request->url() === $webhookUrl &&
@@ -78,7 +78,7 @@ class SubjectControllerTest extends V1SubjectControllerTest
         ]);
 
         $action = "subject test deleted";
-        event(new \App\Http\V2\Events\SubjectEvent($subject, $action));
+        event(new \App\V2\Events\SubjectEvent($subject, $action));
         $subject->delete();
 
         \Http::assertSent(function ($request) use ($webhookUrl, $subject, $action) {

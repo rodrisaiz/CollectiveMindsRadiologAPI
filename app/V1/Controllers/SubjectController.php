@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\V1\Controllers;
+namespace App\V1\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-use App\Http\V2\Events\SubjectEvent;
+use App\V2\Events\SubjectEvent;
 
 class SubjectController extends Controller
 {

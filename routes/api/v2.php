@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\V2\Controllers\ProjectController;
-use App\Http\V2\Controllers\SubjectController;
-use App\Http\V2\Controllers\SubjectsInProjectsController;
+use App\V2\Controllers\ProjectController;
+use App\V2\Controllers\SubjectController;
+use App\V2\Controllers\SubjectsInProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Http\V2\Controllers\WebhookController;
+use App\V2\Controllers\WebhookController;
 
 
 
@@ -34,7 +34,6 @@ Route::resource('subject', SubjectController::class)->only(
 )->middleware('auth:sanctum');
 
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
-Route::get('subject/test', [SubjectController::class, 'test']);
 
 //Projects
 Route::resource('project', ProjectController::class)->only([

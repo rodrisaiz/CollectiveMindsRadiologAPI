@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\V1\Controllers;
+namespace App\V1\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Log;
-use App\Http\V2\Events\SubjectEvent;
+use App\V2\Events\SubjectEvent;
 
 
 

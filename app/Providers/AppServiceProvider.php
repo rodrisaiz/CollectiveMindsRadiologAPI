@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Http\V2\Providers\EventServiceProvider as V2EventServiceProvider;
+use App\V2\Providers\EventServiceProvider as V2EventServiceProvider;
 
 
 class AppServiceProvider extends ServiceProvider
