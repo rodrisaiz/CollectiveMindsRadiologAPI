@@ -7,6 +7,7 @@ use App\V3\Application\UseCases\AllSubject;
 use App\V3\Application\UseCases\FoundSubjectById;
 use App\V3\Application\UseCases\FoundSubjectByEmail;
 use App\V3\Application\UseCases\UpdateSubject;
+use App\V3\Application\UseCases\DeleteSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,14 +19,16 @@ class SubjectController
     private FoundSubjectById $FoundSubjectById;
     private FoundSubjectByEmail $FoundSubjectByEmail;
     private UpdateSubject $UpdateSubject;
+    private DeleteSubject $deleteSubject;
 
-    public function __construct(CreateSubject $createSubject, AllSubject $AllSubject, FoundSubjectById $FoundSubjectById, FoundSubjectByEmail $FoundSubjectByEmail, UpdateSubject $UpdateSubject)
+    public function __construct(CreateSubject $createSubject, AllSubject $AllSubject, FoundSubjectById $FoundSubjectById, FoundSubjectByEmail $FoundSubjectByEmail, UpdateSubject $UpdateSubject, DeleteSubject $deleteSubject)
     {
         $this->createSubject = $createSubject;
         $this->AllSubject = $AllSubject;
         $this->FoundSubjectById = $FoundSubjectById;
         $this->FoundSubjectByEmail = $FoundSubjectByEmail;
         $this->UpdateSubject = $UpdateSubject;
+        $this->deleteSubject = $deleteSubject;
     }
 
     public function index(): JsonResponse
@@ -158,6 +161,23 @@ class SubjectController
             return response()->json(['error' => 'Unable to process the request'], 500);
         }
     }
+
+    public function destroy($id): JsonResponse
+    {   
+        $foundedSubject = $this->deleteSubject->execute($id);
+        Log::info(['foundedSubject' => $foundedSubject]);
+        if(!empty($foundedSubject)){
+            return response()->json([
+                    'message' => 'This subject does not exist',
+            ], 200);    
+        }else{
+            return response()->json([
+                'message' => 'Subject was deleted successfully',
+            ], 200);    
+        }
+    }
+
+    
 
 
     

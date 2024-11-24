@@ -11,5 +11,5 @@ interface SubjectRepositoryInterface
     public function findById(int $id): ?Subject;
     public function findByEmail(string $email): ?Subject;
     public function save(Subject $subject): void;
-    public function delete(Subject $subject): void;
+    public function delete(int $id): void;
 }

@@ -61,9 +61,9 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
 
     }
 
-    public function delete(Subject $subject): void
+    public function delete($id): void
     {
-        EloquentSubject::where('email', $subject->getEmail())->delete();
+        EloquentSubject::find($id)->delete();
     }
 
     private function toDomain(EloquentSubject $model): Subject
