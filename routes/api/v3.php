@@ -1,14 +1,15 @@
 <?php
 
 use App\V2\Controllers\ProjectController;
-use App\V2\Controllers\SubjectController;
+//use App\V2\Controllers\SubjectController;
 use App\V2\Controllers\SubjectsInProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\V2\Controllers\WebhookController;
-
+//use App\V3\Infrastructure\Http\Controllers\SubjectController;
+use App\V3\Infrastructure\Http\Controllers\SubjectController;
 
 
 //Create newUser -> Only for propouse of demostration
@@ -27,14 +28,14 @@ Route::post('Cr34t3/n3wUs3r', function () {
     return response()->json(['token' => $token], 201);
 });
 
-/*
+
 //Subjects
 Route::resource('subject', SubjectController::class)->only(
     'index', 'store', 'show', 'update', 'destroy'
 )->middleware('auth:sanctum');
 
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
-
+/*
 //Projects
 Route::resource('project', ProjectController::class)->only([
     'index', 'store', 'show', 'update'
