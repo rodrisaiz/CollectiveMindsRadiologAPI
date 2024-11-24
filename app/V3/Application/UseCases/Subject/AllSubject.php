@@ -1,12 +1,12 @@
 <?php
 
-namespace App\V3\Application\UseCases;
+namespace App\V3\Application\UseCases\Subject;
 
 use App\V3\Domain\Entities\Subject;
 use App\V3\Domain\Repositories\SubjectRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
-class FoundSubjectById
+class AllSubject
 {
     private SubjectRepositoryInterface $repository;
 
@@ -15,8 +15,9 @@ class FoundSubjectById
         $this->repository = $repository;
     }
 
-    public function execute(int $id): ?Subject
+    public function execute(): array
     {
-        return $this->repository->findById($id);
+        return $this->repository->all();
+        
     }
 }

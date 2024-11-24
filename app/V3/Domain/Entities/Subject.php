@@ -8,15 +8,20 @@ class Subject
     private string $email;
     private string $firstName;
     private string $lastName;
+    private \DateTime $created_at;
+    private \DateTime $updated_at;
     private bool $wasRecentlyCreated = false;
 
-    public function __construct(?int $id, string $email, string $firstName, string $lastName)
+    public function __construct(?int $id, string $email, string $firstName, string $lastName, \DateTime $created_at, \DateTime $updated_at)
     {
         $this->id = $id;
         $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->created_at = $created_at ?: new \DateTime();
+        $this->updated_at = $updated_at ?: new \DateTime();
     }
+    
 
     public function getId(): ?int
     {
@@ -38,7 +43,6 @@ class Subject
         $this->email = $email;
     }
 
-
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -58,6 +62,26 @@ class Subject
     {
         $this->lastName = $lastName;
     }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTime $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTime $updated_at): void
+{
+    $this->updated_at = $updated_at;
+}
 
     public function setWasRecentlyCreated(bool $wasRecentlyCreated): void
     {

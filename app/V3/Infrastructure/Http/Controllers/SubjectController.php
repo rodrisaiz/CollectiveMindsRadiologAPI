@@ -2,15 +2,17 @@
 
 namespace App\V3\Infrastructure\Http\Controllers;
 
-use App\V3\Application\UseCases\CreateSubject;
-use App\V3\Application\UseCases\AllSubject;
-use App\V3\Application\UseCases\FoundSubjectById;
-use App\V3\Application\UseCases\FoundSubjectByEmail;
-use App\V3\Application\UseCases\UpdateSubject;
-use App\V3\Application\UseCases\DeleteSubject;
+use App\V3\Application\UseCases\Subject\CreateSubject;
+use App\V3\Application\UseCases\Subject\AllSubject;
+use App\V3\Application\UseCases\Subject\FoundSubjectById;
+use App\V3\Application\UseCases\Subject\FoundSubjectByEmail;
+use App\V3\Application\UseCases\Subject\UpdateSubject;
+use App\V3\Application\UseCases\Subject\DeleteSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+
 
 class SubjectController
 {
@@ -42,6 +44,8 @@ class SubjectController
                     'email' => $subject->getEmail(),
                     'first_name' => $subject->getFirstName(),
                     'last_name' => $subject->getLastName(),
+                    "created_at" => $subject->getCreatedAt(),
+                    "updated_at" => $subject->getUpdatedAt(),
                 ], $allSubjects)
             ], 200);    
         }else{
@@ -63,6 +67,8 @@ class SubjectController
                     'email' => $foundedSubject->getEmail(),
                     'first_name' => $foundedSubject->getFirstName(),
                     'last_name' => $foundedSubject->getLastName(),
+                    "created_at" => $foundedSubject->getCreatedAt(),
+                    "updated_at" => $foundedSubject->getUpdatedAt(),
                 ],
             ], 200);    
         }else{
@@ -94,13 +100,13 @@ class SubjectController
     
     public function store(Request $request): JsonResponse
     {    
-        $data = $request->validate([
-            'email' => 'required|email',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-        ]);
-    
         try {
+            $data = $request->validate([
+                'email' => 'required|email',
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+            ]);
+    
             $subject = $this->createSubject->execute(
                 $data['email'],
                 $data['first_name'],
@@ -113,18 +119,29 @@ class SubjectController
                         'email' => $subject->getEmail(),
                         'first_name' => $subject->getFirstName(),
                         'last_name' => $subject->getLastName(),
+                        'created_at' => $subject->getCreatedAt()->format('Y-m-d\TH:i:s.u\Z'),
+                        'updated_at' => $subject->getUpdatedAt()->format('Y-m-d\TH:i:s.u\Z'),
+                        'id' => $subject->getId(),
                     ],
-                    'message' => 'Subject was created successfully '
+                    'message' => 'Subject created successfully'
                 ], 201);
             }
     
             return response()->json([
-                'message' => 'Subject already exists'
+                'error' => 'Error creating subject', 
+                'message' => 'Email already exists'
             ], 200);
-
+    
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation Error', 
+                'messages' => $e->errors() // Captura los errores de validación
+            ], 422);
         } catch (\Exception $e) {
-            Log::error('Error in store method', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Unable to process the request'], 500);
+            return response()->json([
+                'error' => 'Error', 
+                'message' => $e->getMessage() // Mensaje general para otras excepciones
+            ], 500);
         }
     }
 
@@ -144,15 +161,19 @@ class SubjectController
             if ($subject->wasRecentlyCreated()) {
                 return response()->json([
                     'data' => [
+                        'id' => $subject->getId(),
                         'email' => $subject->getEmail(),
                         'first_name' => $subject->getFirstName(),
                         'last_name' => $subject->getLastName(),
+                        'created_at' => $subject->getCreatedAt(),
+                        'updated_at' => $subject->getUpdatedAt()
                     ],
-                    'message' => 'Subject was updated successfully '
+                    'message' => 'Subject updated successfully'
                 ], 201);
             }
     
             return response()->json([
+                "error" => "Error updating subject",
                 'message' => 'Email already exists'
             ], 200);
     
@@ -168,11 +189,11 @@ class SubjectController
         Log::info(['foundedSubject' => $foundedSubject]);
         if(!empty($foundedSubject)){
             return response()->json([
-                    'message' => 'This subject does not exist',
+                    'message' => 'Subject not found',
             ], 200);    
         }else{
             return response()->json([
-                'message' => 'Subject was deleted successfully',
+                'message' => 'Subject deleted successfully',
             ], 200);    
         }
     }

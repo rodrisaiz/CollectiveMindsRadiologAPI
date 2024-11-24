@@ -1,6 +1,6 @@
 <?php
 
-namespace App\V3\Application\UseCases;
+namespace App\V3\Application\UseCases\Subject;
 
 use App\V3\Domain\Entities\Subject;
 use App\V3\Domain\Repositories\SubjectRepositoryInterface;
@@ -23,9 +23,25 @@ class CreateSubject
             return $existingSubject;
         }
     
-        $subject = new Subject(null, $email, $firstName, $lastName);
+        $subject = new Subject(
+            null,
+            $email,
+            $firstName,
+            $lastName,
+            new \DateTime(),
+            new \DateTime()
+        );
+        
         $this->repository->save($subject);
         
+        Log::info(['Subject' =>  $subject]);
+       
+        $value = $this->repository->findByEmail($email);
+
+        $id = $value->getId(); 
+        $subject->setId($id); 
+        
         return $subject;
+
     }
 }

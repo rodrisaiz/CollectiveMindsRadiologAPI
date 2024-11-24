@@ -31,9 +31,7 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
 
     public function findByEmail(string $email): ?Subject
     {
-        Log::info(['findByEmail email'=> $email]);
         $subjectModel = EloquentSubject::where('email', $email)->first();
-        Log::info(['findByEmail'=> $subjectModel]);
         return $subjectModel ? $this->toDomain($subjectModel) : null;
     }
 
@@ -68,6 +66,6 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
 
     private function toDomain(EloquentSubject $model): Subject
     {
-        return new Subject($model->id, $model->email, $model->first_name, $model->last_name);
+        return new Subject($model->id, $model->email, $model->first_name, $model->last_name,$model->created_at, $model->updated_at);
     }
 }

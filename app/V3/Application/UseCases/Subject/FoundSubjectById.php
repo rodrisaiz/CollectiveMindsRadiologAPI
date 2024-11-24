@@ -1,12 +1,12 @@
 <?php
 
-namespace App\V3\Application\UseCases;
+namespace App\V3\Application\UseCases\Subject;
 
 use App\V3\Domain\Entities\Subject;
 use App\V3\Domain\Repositories\SubjectRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
-class DeleteSubject
+class FoundSubjectById
 {
     private SubjectRepositoryInterface $repository;
 
@@ -15,13 +15,8 @@ class DeleteSubject
         $this->repository = $repository;
     }
 
-    public function execute(int $id)
+    public function execute(int $id): ?Subject
     {
-        $emptyuser = $this->repository->findById($id);
-        if(empty($emptyuser)){
-            return 1;
-        }else{
-            return $this->repository->delete($id);
-        }
+        return $this->repository->findById($id);
     }
 }
