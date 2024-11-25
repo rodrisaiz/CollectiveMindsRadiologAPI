@@ -13,6 +13,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectControllerTest extends TestCase
 {
+    use RefreshDatabase;
+    
     protected $baseEndpoint = '/api/v3/project/';
 
     protected function getEndpoint(string $path = ''): string
@@ -20,7 +22,6 @@ class ProjectControllerTest extends TestCase
         return $this->baseEndpoint . $path;
     }
 
-   use RefreshDatabase;
 
     protected $user;
     protected $token;
