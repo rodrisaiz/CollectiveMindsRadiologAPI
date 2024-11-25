@@ -12,6 +12,12 @@ use App\V3\Domain\Repositories\SubjectsInProjectsRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentSubjectsInProjectsRepository;
 use App\V3\Domain\Repositories\WebhookRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentWebhookRepository;
+use App\V3\Domain\Contracts\EventInterface;
+use App\V3\Infrastructure\Services\LaravelEventService;
+use App\V3\Domain\Contracts\WebhookInterface;
+use App\V3\Infrastructure\Services\WebhookService;
+
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
         $this->app->bind(SubjectsInProjectsRepositoryInterface::class, EloquentSubjectsInProjectsRepository::class);
         $this->app->bind(WebhookRepositoryInterface::class, EloquentWebhookRepository::class);
+        $this->app->bind(EventInterface::class, LaravelEventService::class);
+        $this->app->bind(WebhookInterface::class, WebhookService::class);
     }
 
     /**

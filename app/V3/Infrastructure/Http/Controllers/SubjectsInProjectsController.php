@@ -4,6 +4,7 @@ namespace App\V3\Infrastructure\Http\Controllers;
 
 use App\V3\Application\UseCases\SubjectsInProjects\EnrollSubjectInProjectUseCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SubjectsInProjectsController 
 {
@@ -29,6 +30,7 @@ class SubjectsInProjectsController
             return response()->json(['error' => 'Project or Subject not found'], 404);
 
         } catch (\Exception $e) {
+            Log::info(['test' =>$e->getMessage()]);
             return response()->json([
                 'error' => 'Error creating the assignment',
                 'message' => $e->getMessage()

@@ -3,6 +3,7 @@
 namespace App\V3\Infrastructure\Persistence;
 
 use App\V3\Domain\Entities\Project;
+
 use App\V3\Domain\Repositories\SubjectsInProjectsRepositoryInterface;
 use App\Models\Project as EloquentProject;
 use App\Models\Subject as EloquentSubject;
@@ -22,6 +23,6 @@ class EloquentSubjectsInProjectsRepository implements SubjectsInProjectsReposito
             return   $subjectModel;
         }
 
-        return null;
+        //return null;
     }
 }
