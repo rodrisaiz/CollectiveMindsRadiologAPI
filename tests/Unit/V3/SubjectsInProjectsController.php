@@ -17,15 +17,16 @@ use Tests\Unit\V1\SubjectsInProjectsController as V1SubjectsInProjectsController
 
 class SubjectsInProjectsController extends V1SubjectsInProjectsController
 {
-    use RefreshDatabase;
-
+    
     //Preexisting V1 tests
     protected $baseEndpoint = '/api/v3/enroll/';
-
+    
     protected function getEndpoint(string $path = ''): string
     {
         return $this->baseEndpoint . $path;
     }
+    use RefreshDatabase;
+
 /*
     //New V2 tests 
     public function test_webhook_subjects_in_projects_enroll()

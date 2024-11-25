@@ -119,18 +119,23 @@ class WebhookController
                     'messages' => $validator->errors()
                 ], 422);
             }
-                $Webhook = $this->updateWebhook->execute($id, $data);
             
-    
-            return response()->json([
-                'data' => [
-                    'id' => $Webhook->getId(),
-                    'type' => $Webhook->getType(),
-                    'url' => $Webhook->getUrl(),
-                ],
-                'message' => 'Webhook updated successfully'
-            ], 201);
-
+            $Webhook = $this->updateWebhook->execute($id, $data);
+            
+            if(!is_null($Webhook)){
+                return response()->json([
+                    'data' => [
+                        'id' => $Webhook->getId(),
+                        'type' => $Webhook->getType(),
+                        'url' => $Webhook->getUrl(),
+                    ],
+                    'message' => 'Webhook updated successfully'
+                ], 201);
+            }else{
+                return response()->json([
+                    'message' => 'Webhook not found'
+                ], 201);
+            }
     
         } catch (\Exception $e) {
             Log::error('Error in update method', ['error' => $e->getMessage()]);
@@ -140,8 +145,14 @@ class WebhookController
 
     public function destroy(int $id): JsonResponse
     {  
-        $this->deleteWebhook->execute($id);
-            
+        $webhook = $this->deleteWebhook->execute($id);
+        
+        if(is_null($webhook)){
+            return response()->json([
+                'message' => 'Webhook not found'
+            ], 201);
+        }
+        
         return response()->json([
             'message' => 'Webhook deleted successfully'
         ], 201);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\V3\Controllers;
+namespace App\V3\Infrastructure\Http\Controllers;
 
 use App\V3\Application\UseCases\SubjectsInProjects\EnrollSubjectInProjectUseCase;
 use Illuminate\Http\Request;

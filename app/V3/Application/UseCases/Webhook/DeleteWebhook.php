@@ -16,9 +16,13 @@ class DeleteWebhook
         $this->repository = $repository;
     }
 
-    public function execute(int $id): void
+    public function execute(int $id): ?Webhook
     {
-        $Webhook = $this->repository->delete($id);
+        $Webhook = $this->repository->findById($id);
+        if(is_null($Webhook)){
+            return null;
+        }
+        $this->repository->delete($id);
     }
 
 }

@@ -7,6 +7,7 @@ use App\V3\Domain\Repositories\WebhookRepositoryInterface;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 
+
 class UpdateWebhook
 {
     private WebhookRepositoryInterface $repository;
@@ -19,6 +20,11 @@ class UpdateWebhook
     public function execute(int $id, array $data): ?Webhook
     {
         $Webhook = $this->repository->findById($id);
+    
+        if (is_null($Webhook)) {
+            return null; 
+        }
+
         if (isset($data['type'])) {
             $Webhook->setType($data['type']);
         }
