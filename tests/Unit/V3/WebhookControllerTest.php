@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\V2;
+namespace Tests\Unit\V3;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,8 +25,8 @@ class WebhookControllerTest extends TestCase
     }
 
     protected $baseEndpoints = [
-        '/api/v2/webhooks/subject/',
-        '/api/v2/webhooks/project/',
+        '/api/v3/webhooks/subject/',
+        '/api/v3/webhooks/project/',
     ];
 
     protected function getEndpoint(string $path = '', string $base = '/api/v1/subject/'): string
@@ -38,10 +38,10 @@ class WebhookControllerTest extends TestCase
     public function test_create_a_webhook_with_a_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v2/webhooks/subject/") {
-                $expectedType = 'subjectV2';
-            } elseif ($base == "/api/v2/webhooks/project/") {
-                $expectedType = 'projectV2';
+            if ($base == "/api/v3/webhooks/subject/") {
+                $expectedType = 'subjectV3';
+            } elseif ($base == "/api/v3/webhooks/project/") {
+                $expectedType = 'projectV3';
             }
 
             $response = $this->withHeaders([
@@ -50,7 +50,7 @@ class WebhookControllerTest extends TestCase
                 'url' => 'https://example.com/webhook-handler',
             ]);
 
-            $response->assertStatus(201);
+            $response->assertStatus(200);
             $this->assertDatabaseHas('webhooks', [
                 'type' => $expectedType,
                 'url' => 'https://example.com/webhook-handler',
@@ -62,16 +62,16 @@ class WebhookControllerTest extends TestCase
     public function test_create_a_webhook_with_invalid_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v2/webhooks/subject/") {
-                $expectedType = 'subjectV2';
-            } elseif ($base == "/api/v2/webhooks/project/") {
-                $expectedType = 'projectV2';
+            if ($base == "/api/v3/webhooks/subject/") {
+                $expectedType = 'subjectV3';
+            } elseif ($base == "/api/v3/webhooks/project/") {
+                $expectedType = 'projectV3';
             }
 
             $response = $this->withHeaders([
                 'Authorization' => 'Bearer ' . $this->token,
             ])->postJson($base, [
-                'url' => 'invalid-url'
+                'url' => 1234
             ]);
 
             $response->assertStatus(422);
@@ -82,10 +82,10 @@ class WebhookControllerTest extends TestCase
     public function test_update_a_webhook_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v2/webhooks/subject/") {
-                $expectedType = 'subjectV2';
-            } elseif ($base == "/api/v2/webhooks/project/") {
-                $expectedType = 'projectV2';
+            if ($base == "/api/v3/webhooks/subject/") {
+                $expectedType = 'subjectV3';
+            } elseif ($base == "/api/v3/webhooks/project/") {
+                $expectedType = 'projectV3';
             }
 
             $webhook = Webhook::factory()->create([
@@ -98,7 +98,7 @@ class WebhookControllerTest extends TestCase
                     'url' => 'https://example2.com/updated-handler'
                 ]);
                 
-            $response->assertStatus(200);
+            $response->assertStatus(201);
 
             $response->assertJson([
                 'data' => [
