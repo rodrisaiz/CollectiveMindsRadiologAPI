@@ -173,12 +173,12 @@ class SubjectController
     }
 
     public function update(Request $request, int $id): JsonResponse
-    {
+    { 
         $data = $request->validate([
             'email' => [
                 'required',
                 'email',
-                Rule::unique('subjects')->ignore($id),
+                Rule::unique('subjects'),
             ],
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -186,7 +186,6 @@ class SubjectController
     
         try {
             $subject = $this->UpdateSubject->execute($id, $data);
-        
             if ($subject->wasRecentlyCreated()) {
                 return response()->json([
                     'data' => [
@@ -207,7 +206,12 @@ class SubjectController
             ], 200);
     
         } catch (\Exception $e) {
-            Log::error('Error in update method', ['error' => $e->getMessage()]);
+            Log::error('Error updating subject', ['error' => $e->getMessage()]);
+    
+            if (str_contains($e->getMessage(), 'not found')) {
+                return response()->json(['error' => 'Subject not found'], 404);
+            }
+    
             return response()->json(['error' => 'Unable to process the request'], 500);
         }
     }

@@ -82,13 +82,13 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
     
 
     public function findByEmail(string $email): ?Subject
-    {
-        $subjectModel = EloquentSubject::with('projects')->where('email', $email)->first();
-    
+    {   $subjectModel = EloquentSubject::where('email', $email)->with('projects')->first();
         if (!$subjectModel) {
+            Log::warning("No se encontró subject con email: {$email}");
             return null; 
         }
     
+        
         $subject = new Subject(
             $subjectModel->id,
             $subjectModel->email,
@@ -112,7 +112,7 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
             $subject->setProjects($projects);
         }
     
-        return $subject;
+        return $this->toDomain($subjectModel);
     }
 
     public function save(Subject $subject): void

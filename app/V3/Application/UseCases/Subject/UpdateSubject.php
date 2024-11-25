@@ -8,6 +8,8 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 use App\V3\Domain\Contracts\EventInterface;
 use App\V3\Domain\Contracts\WebhookInterface;
+use Exception;
+
 
 class UpdateSubject
 {
@@ -24,16 +26,21 @@ class UpdateSubject
     }
 
     public function execute(int $id, array $data): ?Subject
-    {
-        $existingSubject = $this->repository->findByEmail($data['email']);
-
-        if ($existingSubject) {
-            return $existingSubject; 
+    {   
+       $existingSubject = $this->repository->findByEmail($data['email']);
+        if (!is_null($existingSubject)) {
+          return $existingSubject; 
         }
         
         $subject = $this->repository->findById($id);
+
+        if (is_null($subject)) {
+            throw new Exception("Subject with ID {$id} not found.");
+        }
+
+
         if (isset($data['email'])) {
-            $subject->setEmail($data['email']);
+           $subject->setEmail($data['email']);
         }
 
         if (isset($data['first_name'])) {

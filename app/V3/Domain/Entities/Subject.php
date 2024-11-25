@@ -39,7 +39,7 @@ class Subject
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
@@ -49,7 +49,7 @@ class Subject
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(string $firstName)
     {
         $this->firstName = $firstName;
     }
@@ -59,7 +59,7 @@ class Subject
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(string $lastName)
     {
         $this->lastName = $lastName;
     }
