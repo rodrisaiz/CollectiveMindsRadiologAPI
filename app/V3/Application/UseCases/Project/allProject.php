@@ -6,7 +6,7 @@ use App\V3\Domain\Entities\Project;
 use App\V3\Domain\Repositories\ProjectRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
-class allProject
+class AllProject
 {
     private ProjectRepositoryInterface $repository;
 

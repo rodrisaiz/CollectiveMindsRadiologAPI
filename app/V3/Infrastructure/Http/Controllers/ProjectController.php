@@ -2,11 +2,12 @@
 
 namespace App\V3\Infrastructure\Http\Controllers;
 
-use App\V3\Application\UseCases\Project\createProject;
-use App\V3\Application\UseCases\Project\allProject;
-use App\V3\Application\UseCases\Project\foundProjectById;
-use App\V3\Application\UseCases\Project\foundProjectByname;
-use App\V3\Application\UseCases\Project\updateProject;
+use App\V3\Application\UseCases\Project\CreateProject;
+use App\V3\Application\UseCases\Project\AllProject;
+use App\V3\Application\UseCases\Project\FoundProjectById;
+use App\V3\Application\UseCases\Project\FoundProjectByname;
+use App\V3\Application\UseCases\Project\UpdateProject;
+use App\V3\Application\UseCases\Project\DeleteSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,13 +18,13 @@ use Illuminate\Validation\Rule;
 
 class ProjectController
 {
-    private createProject $createProject;
-    private allProject $allProject;
-    private foundProjectById $foundProjectById;
-    private foundProjectByName $foundProjectByName;
-    private updateProject $updateProject;
+    private CreateProject $createProject;
+    private AllProject $allProject;
+    private FoundProjectById $foundProjectById;
+    private FoundProjectByname $foundProjectByName;
+    private UpdateProject $updateProject;
 
-    public function __construct(createProject $createProject, allProject $allProject, foundProjectById $foundProjectById, foundProjectByName $foundProjectByName, updateProject $updateProject)
+    public function __construct(CreateProject $createProject, AllProject $allProject, FoundProjectById $foundProjectById, FoundProjectByname $foundProjectByName, UpdateProject $updateProject)
     {
         $this->createProject = $createProject;
         $this->allProject = $allProject;
