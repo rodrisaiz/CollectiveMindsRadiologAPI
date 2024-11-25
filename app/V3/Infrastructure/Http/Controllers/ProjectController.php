@@ -127,7 +127,7 @@ class projectController
     
             return response()->json([
                 'error' => 'Error creating project', 
-                'message' => 'name already exists'
+                'message' => 'Name already exists'
             ], 200);
     
         } catch (ValidationException $e) {
@@ -166,7 +166,7 @@ class projectController
                         'created_at' => $project->getCreatedAt(),
                         'updated_at' => $project->getUpdatedAt()
                     ],
-                    'message' => 'project updated successfully'
+                    'message' => 'Project updated successfully'
                 ], 201);
             }
     
