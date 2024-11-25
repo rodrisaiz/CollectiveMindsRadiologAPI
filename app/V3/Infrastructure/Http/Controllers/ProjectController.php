@@ -7,7 +7,6 @@ use App\V3\Application\UseCases\Project\AllProject;
 use App\V3\Application\UseCases\Project\FoundProjectById;
 use App\V3\Application\UseCases\Project\FoundProjectByname;
 use App\V3\Application\UseCases\Project\UpdateProject;
-use App\V3\Application\UseCases\Project\DeleteSubject;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
