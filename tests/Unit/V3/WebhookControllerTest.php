@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\V3;
+namespace Tests\Unit\V2;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,19 +25,23 @@ class WebhookControllerTest extends TestCase
     }
 
     protected $baseEndpoints = [
-        '/api/v3/webhooks/subject/',
-        '/api/v3/webhooks/project/',
+        '/api/v2/webhooks/subject/',
+        '/api/v2/webhooks/project/',
     ];
 
+    protected function getEndpoint(string $path = '', string $base = '/api/v1/subject/'): string
+    {
+        return $base . $path;
+    }
 
     //Test for assigning url to webhooks
     public function test_create_a_webhook_with_a_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v3/webhooks/subject/") {
-                $expectedType = 'subjectV3';
-            } elseif ($base == "/api/v3/webhooks/project/") {
-                $expectedType = 'projectV3';
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
             }
 
             $response = $this->withHeaders([
@@ -58,10 +62,10 @@ class WebhookControllerTest extends TestCase
     public function test_create_a_webhook_with_invalid_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v3/webhooks/subject/") {
-                $expectedType = 'subjectV3';
-            } elseif ($base == "/api/v3/webhooks/project/") {
-                $expectedType = 'projectV3';
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
             }
 
             $response = $this->withHeaders([
@@ -78,10 +82,10 @@ class WebhookControllerTest extends TestCase
     public function test_update_a_webhook_url()
     {
         foreach ($this->baseEndpoints as $base) {
-            if ($base == "/api/v3/webhooks/subject/") {
-                $expectedType = 'subjectV3';
-            } elseif ($base == "/api/v3/webhooks/project/") {
-                $expectedType = 'projectV3';
+            if ($base == "/api/v2/webhooks/subject/") {
+                $expectedType = 'subjectV2';
+            } elseif ($base == "/api/v2/webhooks/project/") {
+                $expectedType = 'projectV2';
             }
 
             $webhook = Webhook::factory()->create([
