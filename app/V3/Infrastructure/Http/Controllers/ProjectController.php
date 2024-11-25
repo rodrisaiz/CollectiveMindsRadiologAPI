@@ -143,7 +143,7 @@ class ProjectController
     }
 
     public function update(Request $request, int $id): JsonResponse
-    {
+    {  
         $data = $request->validate([
             'name' => [
                 'required',
