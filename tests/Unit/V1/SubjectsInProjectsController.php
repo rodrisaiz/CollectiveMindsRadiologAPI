@@ -14,6 +14,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SubjectsInProjectsController extends TestCase
 {
+    protected $baseEndpoint = '/api/v1/enroll/';
+
+    protected function getEndpoint(string $path = ''): string
+    {
+        return $this->baseEndpoint . $path;
+    }
+
     use RefreshDatabase;
 
     protected $user;
@@ -35,7 +42,7 @@ class SubjectsInProjectsController extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/enroll/'. $subject->id . '/' . $project->id);
+        ])->postJson($this->getEndpoint(). $subject->id . '/' . $project->id);
 
         $response->assertStatus(200)
                     ->assertJsonStructure([
@@ -75,7 +82,7 @@ class SubjectsInProjectsController extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/enroll/'. $subject->id . '/4000');
+        ])->postJson($this->getEndpoint(). $subject->id . '/4000');
 
         $response->assertStatus(500)
         ->assertJson([

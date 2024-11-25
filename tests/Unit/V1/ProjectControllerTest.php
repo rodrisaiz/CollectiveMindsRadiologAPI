@@ -25,6 +25,13 @@ class ProjectControllerTest extends TestCase
         $this->token = $this->user->createToken('test-token')->plainTextToken;
     }
 
+    protected $baseEndpoint = '/api/v1/project/';
+
+    protected function getEndpoint(string $path = ''): string
+    {
+        return $this->baseEndpoint . $path;
+    }
+
      //Index test
      public function test_projects_index_returns_successfully()
      {
@@ -32,7 +39,7 @@ class ProjectControllerTest extends TestCase
  
          $response = $this->withHeaders([
              'Authorization' => 'Bearer ' . $this->token,
-         ])->getJson('/api/v1/project');
+         ])->getJson($this->getEndpoint());
  
          $response->assertStatus(200)
                   ->assertJsonStructure([
@@ -53,7 +60,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/project', $data);
+        ])->postJson($this->getEndpoint(), $data);
 
         $response->assertStatus(201)
                  ->assertJson([
@@ -76,7 +83,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson('/api/v1/project', $data);
+        ])->postJson($this->getEndpoint(), $data);
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -94,7 +101,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/project/'. $project->id);
+        ])->getJson($this->getEndpoint(). $project->id);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -112,7 +119,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->getJson('/api/v1/project/'. 1000);
+        ])->getJson($this->getEndpoint(). 1000);
 
         $response->assertStatus(404)
                  ->assertJson([
@@ -127,7 +134,7 @@ class ProjectControllerTest extends TestCase
  
          $response = $this->withHeaders([
              'Authorization' => 'Bearer ' . $this->token,
-         ])->getJson('/api/v1/project/name/'. $project->name);
+         ])->getJson($this->getEndpoint().'name/'. $project->name);
  
          $response->assertStatus(200)
                   ->assertJson([
@@ -149,7 +156,7 @@ class ProjectControllerTest extends TestCase
  
          $response = $this->withHeaders([
              'Authorization' => 'Bearer ' . $this->token,
-         ])->getJson('/api/v1/project/name/'. "test project 25");
+         ])->getJson($this->getEndpoint().'name/'. "test project 25");
  
          $response->assertStatus(404)
                   ->assertJson([
@@ -171,7 +178,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->putJson('/api/v1/project/' . $project->id, $data);
+        ])->putJson($this->getEndpoint() . $project->id, $data);
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -199,7 +206,7 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->putJson('/api/v1/project/' . $project->id, $data);
+        ])->putJson($this->getEndpoint() . $project->id, $data);
 
         $response->assertStatus(422)
                  ->assertJson([

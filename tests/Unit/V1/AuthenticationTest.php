@@ -11,6 +11,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
+    protected $endpoints = [
+        'project' => '/api/v1/project/',
+        'subject' => '/api/v1/subject/',
+        'enroll' => '/api/v1/enroll/',
+    ];
+
+    protected function getEndpoint(string $key): string
+    {
+        if (!isset($this->endpoints[$key])) {
+            throw new \InvalidArgumentException("Endpoint '$key' not defined.");
+        }
+        return $this->endpoints[$key] ;
+    }
+
     use RefreshDatabase;
 
      //Index project test
@@ -18,7 +32,7 @@ class AuthenticationTest extends TestCase
      {
          Project::factory()->count(3)->create();
  
-         $response = $this->getJson('/api/v1/project');
+         $response = $this->getJson($this->getEndpoint('project'));
  
          $response->assertStatus(401);
      }
@@ -32,7 +46,7 @@ class AuthenticationTest extends TestCase
             'description' => 'Lorem Ipsum es simplemente el texto de relleno',
         ];
 
-        $response = $this->postJson('/api/v1/project', $data);
+        $response = $this->postJson($this->getEndpoint('project'), $data);
 
         $response->assertStatus(401);
 
@@ -44,7 +58,7 @@ class AuthenticationTest extends TestCase
     {
         $project = Project::factory()->create();
 
-        $response = $this->getJson('/api/v1/project/'. $project->id);
+        $response = $this->getJson($this->getEndpoint('project'). $project->id);
 
         $response->assertStatus(401);
     }
@@ -55,7 +69,7 @@ class AuthenticationTest extends TestCase
      {
          $project = Project::factory()->create();
  
-         $response = $this->getJson('/api/v1/project/name/'. $project->name);
+         $response = $this->getJson($this->getEndpoint('project') .'name/'. $project->name);
  
          $response->assertStatus(401);
      }
@@ -73,7 +87,7 @@ class AuthenticationTest extends TestCase
             'description' => $project->description,
         ];
 
-        $response = $this->putJson('/api/v1/project/' . $project->id, $data);
+        $response = $this->putJson($this->getEndpoint('project') . $project->id, $data);
 
         $response->assertStatus(401);
     }
@@ -86,7 +100,7 @@ class AuthenticationTest extends TestCase
     {
         Subject::factory()->count(3)->create();
 
-        $response = $this->getJson('/api/v1/subject');
+        $response = $this->getJson($this->getEndpoint('subject'));
 
         $response->assertStatus(401);
     }
@@ -101,7 +115,7 @@ class AuthenticationTest extends TestCase
             'last_name' => 'User'
         ];
 
-        $response = $this->postJson('/api/v1/subject', $data);
+        $response = $this->postJson($this->getEndpoint('subject'), $data);
 
         $response->assertStatus(401);
 
@@ -114,7 +128,7 @@ class AuthenticationTest extends TestCase
     {
         $subject = Subject::factory()->create();
 
-        $response = $this->getJson('/api/v1/subject/'. $subject->id);
+        $response = $this->getJson($this->getEndpoint('subject'). $subject->id);
 
         $response->assertStatus(401);
     }
@@ -127,7 +141,7 @@ class AuthenticationTest extends TestCase
     {
         $subject = Subject::factory()->create();
 
-        $response = $this->getJson('/api/v1/subject/email/'. $subject->email);
+        $response = $this->getJson( $this->getEndpoint('subject').'email/'. $subject->email);
 
         $response->assertStatus(401);
     }
@@ -147,7 +161,7 @@ class AuthenticationTest extends TestCase
             'last_name' => $subject->last_name
         ];
 
-        $response = $this->putJson('/api/v1/subject/' . $subject->id, $data);
+        $response = $this->putJson($this->getEndpoint('subject') . $subject->id, $data);
 
         $response->assertStatus(401);
     }
@@ -158,7 +172,7 @@ class AuthenticationTest extends TestCase
     {
         $subject = Subject::factory()->create();
 
-        $response = $this->deleteJson('/api/v1/subject/'. $subject->id);
+        $response = $this->deleteJson($this->getEndpoint('subject'). $subject->id);
 
         $response->assertStatus(401);
     }
@@ -169,7 +183,7 @@ class AuthenticationTest extends TestCase
         $subject = Subject::factory()->create();
         $project = Project::factory()->create();
 
-        $response = $this->postJson('/api/v1/enroll/'. $subject->id . '/' . $project->id);
+        $response = $this->postJson($this->getEndpoint('enroll'). $subject->id . '/' . $project->id);
 
         $response->assertStatus(401);
     }

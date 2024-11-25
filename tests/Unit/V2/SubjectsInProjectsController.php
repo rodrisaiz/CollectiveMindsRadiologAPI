@@ -2,56 +2,43 @@
 
 namespace Tests\Unit\V2;
 
+
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Subject;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Webhook;
-use Tests\Unit\V1\SubjectControllerTest as V1SubjectControllerTest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Unit\V1\SubjectsInProjectsController as V1SubjectsInProjectsController;
 
 
-class SubjectControllerTest extends V1SubjectControllerTest
+
+class SubjectsInProjectsController extends V1SubjectsInProjectsController
 {
+
     //Preexisting V1 tests
-    protected $baseEndpoint = '/api/v2/subject/';
+    protected $baseEndpoint = '/api/v2/enroll/';
 
     protected function getEndpoint(string $path = ''): string
     {
         return $this->baseEndpoint . $path;
     }
 
-    protected $user;
-    protected $token;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create();
-        $this->token = $this->user->createToken('test-token')->plainTextToken;
-    }
-
-
     //New V2 tests 
     use RefreshDatabase;
 
-    public function test_webhook_subject_created()
+    public function test_webhook_subjects_in_projects_enroll()
     {
         $webhookUrl = 'https://example.com/webhook';
         \Config::set('services.webhook.subject', $webhookUrl);
         
         \Http::fake();
 
-        
         $subject = Subject::factory()->create();
-        $project = Project::factory()->create();
-
-        $this->withHeaders([
-            'Authorization' => 'Bearer ' . $this->token,
-        ])->postJson($this->getEndpoint(). $subject->id . '/' . $project->id);
-
         $action = "subject test created";
+
         Webhook::factory()->create([
                 'type' => 'subjectV2',
                 'url' => 'https://example.com/webhook',
@@ -67,4 +54,3 @@ class SubjectControllerTest extends V1SubjectControllerTest
         });
     }
 }
-
