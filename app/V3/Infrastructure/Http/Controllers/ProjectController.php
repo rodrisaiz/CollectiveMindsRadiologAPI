@@ -148,14 +148,11 @@ class ProjectController
             'name' => [
                 'required',
                 'string',
-                Rule::unique('projects')->ignore($id),
             ],
             'description' => 'nullable|string',
         ]);
-        
         try {
             $project = $this->updateProject->execute($id, $data);
-        
             if ($project->wasRecentlyCreated()) {
                 return response()->json([
                     'data' => [
