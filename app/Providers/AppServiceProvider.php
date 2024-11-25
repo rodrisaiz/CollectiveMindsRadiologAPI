@@ -10,6 +10,8 @@ use App\V3\Domain\Repositories\ProjectRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentProjectRepository;
 use App\V3\Domain\Repositories\SubjectsInProjectsRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentSubjectsInProjectsRepository;
+use App\V3\Domain\Repositories\WebhookRepositoryInterface;
+use App\V3\Infrastructure\Persistence\EloquentWebhookRepository;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(SubjectRepositoryInterface::class, EloquentSubjectRepository::class);
         $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
         $this->app->bind(SubjectsInProjectsRepositoryInterface::class, EloquentSubjectsInProjectsRepository::class);
+        $this->app->bind(WebhookRepositoryInterface::class, EloquentWebhookRepository::class);
     }
 
     /**

@@ -121,9 +121,9 @@ class ProjectControllerTest extends TestCase
             'Authorization' => 'Bearer ' . $this->token,
         ])->getJson($this->getEndpoint(). 1000);
 
-        $response->assertStatus(404)
+        $response->assertStatus(200)
                  ->assertJson([
-                        'error' => 'Project not found',
+                        'message' => 'This project does not exist',
                   ]);
     }
 
@@ -158,9 +158,9 @@ class ProjectControllerTest extends TestCase
             'Authorization' => 'Bearer ' . $this->token,
         ])->getJson($this->getEndpoint().'name/'. "rodrisaiz");
 
-        $response->assertStatus(404)
+        $response->assertStatus(200)
                  ->assertJson([
-                        'error' => 'Project not found',
+                        'message'=>'This project does not exist',
                   ]);
     }
 
@@ -180,12 +180,13 @@ class ProjectControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->putJson($this->getEndpoint() . $project->id, $data);
+        ])->putJson($this->getEndpoint(). $project->id, $data);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
                  ->assertJson([
                      'data' => [
-                        'description' => 'New Name'
+                        'name' => 'new',
+                        'description' => 'New Name',
                      ]
                  ]);
 
@@ -208,8 +209,8 @@ class ProjectControllerTest extends TestCase
 
         $response->assertStatus(422)
                  ->assertJson([
-                    "error"=> "Validation Error",
-                    "messages" => [
+                    "message"=> "The name field must be a string.",
+                    "errors" => [
                     "name"=> [
                             "The name field must be a string."
                         ]

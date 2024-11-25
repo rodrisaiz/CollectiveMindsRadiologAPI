@@ -63,46 +63,6 @@ class WebhookController extends Controller
             'message' => 'Webhook created successfully'
         ], 201);
     }
-/*
-    public function update(Request $request, Webhook $webhook)
-    {
-                
-        try{
-            $data = $request->all(); 
-            
-            if ($request->path() == "api/v2/webhooks/subject") {
-                $data['type'] = 'subjectV2';
-            }elseif($request->path() == "api/v2/webhooks/project") {
-                $data['type'] = 'projectV2';
-            }
-
-            $validator = Validator::make($data, [
-                'type' => 'required|string|max:255',
-                'url' => 'required|url',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => 'Validation Error', 
-                    'messages' => $validator->errors()
-                ], 422);
-            }
-        
-           $NewWebhook = Webhook::findOrFail($webhook);
-            
-            $NewWebhook->update($data);
-
-            return response()->json([
-                'data' => $webhook, 
-                'message' => 'Webhook updated successfully'
-            ], 200);
-        }catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'Webhook not found'
-            ], 404);
-        }
-    }
-*/
 
 public function update(Request $request, Webhook $webhook)
 {

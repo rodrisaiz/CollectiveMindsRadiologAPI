@@ -1,15 +1,13 @@
 <?php
 
-use App\V2\Controllers\ProjectController;
-//use App\V2\Controllers\SubjectController;
-use App\V2\Controllers\SubjectsInProjectsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\V2\Controllers\WebhookController;
-//use App\V3\Infrastructure\Http\Controllers\SubjectController;
 use App\V3\Infrastructure\Http\Controllers\SubjectController;
+use App\V3\Infrastructure\Http\Controllers\ProjectController;
+use App\V3\Infrastructure\Http\Controllers\SubjectsInProjectsController;
+use App\V3\Infrastructure\Http\Controllers\WebhookController;
 
 
 //Create newUser -> Only for propouse of demostration
@@ -45,16 +43,14 @@ Route::get('project/name/{name}', [ProjectController::class, 'showByName'])->mid
 
 //Assigment of subjects to projects
 Route::post('enroll/{subjectId}/{projectId}', [SubjectsInProjectsController::class, 'enroll'])->middleware('auth:sanctum');
-/*
+
 //Webhooks
 Route::prefix('webhooks')->group(function () {
     Route::resource('subject', WebhookController::class)->only(
         'index', 'store', 'update', 'destroy'
     )->middleware('auth:sanctum');
 
-
     Route::resource('project', WebhookController::class)->only(
         'index', 'store', 'update', 'destroy'
     )->middleware('auth:sanctum');
 });
-*/

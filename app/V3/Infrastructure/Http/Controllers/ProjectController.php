@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
 
 
 
-class projectController
+class ProjectController
 {
     private createProject $createProject;
     private allProject $allProject;
@@ -102,9 +102,8 @@ class projectController
     {    
         try {
             $data = $request->validate([
-                'name' => 'required|name',
+                'name' => 'required|string|max:255',
                 'description' => 'required|string',
-                'last_name' => 'required|string',
             ]);
     
             $project = $this->createProject->execute(
@@ -148,12 +147,12 @@ class projectController
         $data = $request->validate([
             'name' => [
                 'required',
-                'name',
+                'string',
                 Rule::unique('projects')->ignore($id),
             ],
-            'description' => 'string',
+            'description' => 'nullable|string',
         ]);
-    
+        
         try {
             $project = $this->updateProject->execute($id, $data);
         
