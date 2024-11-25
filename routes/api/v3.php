@@ -35,7 +35,7 @@ Route::resource('subject', SubjectController::class)->only(
 )->middleware('auth:sanctum');
 
 Route::get('subject/email/{email}', [SubjectController::class, 'showByEmail'])->middleware('auth:sanctum');
-/*
+
 //Projects
 Route::resource('project', ProjectController::class)->only([
     'index', 'store', 'show', 'update'
@@ -45,7 +45,7 @@ Route::get('project/name/{name}', [ProjectController::class, 'showByName'])->mid
 
 //Assigment of subjects to projects
 Route::post('enroll/{subjectId}/{projectId}', [SubjectsInProjectsController::class, 'enroll'])->middleware('auth:sanctum');
-
+/*
 //Webhooks
 Route::prefix('webhooks')->group(function () {
     Route::resource('subject', WebhookController::class)->only(

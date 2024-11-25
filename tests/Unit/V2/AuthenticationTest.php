@@ -82,7 +82,7 @@ class AuthenticationTest extends  V1AuthenticationTest
             'type' => $expectedType . '_' . uniqid(),
             'url' => 'https://example4.com/original-handler',
         ]);
-        Log::info(['TEST =' => $webhook->id ]);
+
         $response = $this->putJson($base.$webhook->id, [
             'url' => 'https://example2.com/updated-handler'
         ]);

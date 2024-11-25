@@ -13,6 +13,8 @@ use Tests\Unit\V1\SubjectControllerTest as V1SubjectControllerTest;
 
 class SubjectControllerTest extends V1SubjectControllerTest
 {
+    use RefreshDatabase;
+    
     //Preexisting V1 tests
     protected $baseEndpoint = '/api/v2/subject/';
 
@@ -34,8 +36,6 @@ class SubjectControllerTest extends V1SubjectControllerTest
 
 
     //New V2 tests 
-    use RefreshDatabase;
-
     public function test_webhook_subject_created()
     {
         $webhookUrl = 'https://example.com/webhook';

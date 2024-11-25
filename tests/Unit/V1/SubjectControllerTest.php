@@ -12,15 +12,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 class SubjectControllerTest extends TestCase
-{
+{ 
+   use RefreshDatabase;
+
     protected $baseEndpoint = '/api/v1/subject/';
 
     protected function getEndpoint(string $path = ''): string
     {
         return $this->baseEndpoint . $path;
     }
-
-   use RefreshDatabase;
 
     protected $user;
     protected $token;

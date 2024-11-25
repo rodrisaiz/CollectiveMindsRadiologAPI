@@ -141,12 +141,12 @@ class SubjectController
         } catch (ValidationException $e) {
             return response()->json([
                 'error' => 'Validation Error', 
-                'messages' => $e->errors() // Captura los errores de validación
+                'messages' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Error', 
-                'message' => $e->getMessage() // Mensaje general para otras excepciones
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -205,9 +205,5 @@ class SubjectController
             ], 200);    
         }
     }
-
-    
-
-
     
 }

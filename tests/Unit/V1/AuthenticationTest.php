@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
+    use RefreshDatabase;
+    
     protected $endpoints = [
         'project' => '/api/v1/project/',
         'subject' => '/api/v1/subject/',
@@ -24,8 +26,6 @@ class AuthenticationTest extends TestCase
         }
         return $this->endpoints[$key] ;
     }
-
-    use RefreshDatabase;
 
      //Index project test
      public function test_projects_index_returns_authentication_error()

@@ -17,6 +17,7 @@ use Tests\Unit\V1\SubjectsInProjectsController as V1SubjectsInProjectsController
 
 class SubjectsInProjectsController extends V1SubjectsInProjectsController
 {
+    use RefreshDatabase;
 
     //Preexisting V1 tests
     protected $baseEndpoint = '/api/v2/enroll/';
@@ -27,8 +28,6 @@ class SubjectsInProjectsController extends V1SubjectsInProjectsController
     }
 
     //New V2 tests 
-    use RefreshDatabase;
-
     public function test_webhook_subjects_in_projects_enroll()
     {
         $webhookUrl = 'https://example.com/webhook';

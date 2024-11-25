@@ -11,6 +11,8 @@ use Tests\Unit\V1\ProjectControllerTest as V1ProjectControllerTest;
 
 class ProjectControllerTest extends V1ProjectControllerTest
 {
+    use RefreshDatabase;
+    
     //Preexisting V1 tests
     protected $baseEndpoint = '/api/v2/project/';
 
@@ -20,8 +22,6 @@ class ProjectControllerTest extends V1ProjectControllerTest
     }
 
     //New V2 tests 
-    use RefreshDatabase;
-
     public function test_webhook_project_created()
     {
         $webhookUrl = 'https://example.com/webhook';

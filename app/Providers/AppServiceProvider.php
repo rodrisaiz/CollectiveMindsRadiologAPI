@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use App\V2\Providers\EventServiceProvider as V2EventServiceProvider;
 use App\V3\Domain\Repositories\SubjectRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentSubjectRepository;
+use App\V3\Domain\Repositories\ProjectRepositoryInterface;
+use App\V3\Infrastructure\Persistence\EloquentProjectRepository;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->register(V2EventServiceProvider::class);
         $this->app->bind(SubjectRepositoryInterface::class, EloquentSubjectRepository::class);
+        $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
     }
 
     /**
