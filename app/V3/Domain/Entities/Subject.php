@@ -11,6 +11,7 @@ class Subject
     private \DateTime $created_at;
     private \DateTime $updated_at;
     private bool $wasRecentlyCreated = false;
+    private array $projects = [];
 
     public function __construct(?int $id, string $email, string $firstName, string $lastName, \DateTime $created_at, \DateTime $updated_at)
     {
@@ -79,9 +80,19 @@ class Subject
     }
 
     public function setUpdatedAt(\DateTime $updated_at): void
-{
-    $this->updated_at = $updated_at;
-}
+    {
+        $this->updated_at = $updated_at;
+    }
+
+    public function setProjects(array $projects): void
+    {
+        $this->projects = $projects;
+    }
+
+    public function getProjects(): array
+    {
+        return $this->projects;
+    }
 
     public function setWasRecentlyCreated(bool $wasRecentlyCreated): void
     {

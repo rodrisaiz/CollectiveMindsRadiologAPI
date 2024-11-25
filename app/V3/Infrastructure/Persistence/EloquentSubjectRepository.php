@@ -3,6 +3,7 @@
 namespace App\V3\Infrastructure\Persistence;
 
 use App\V3\Domain\Entities\Subject;
+use App\V3\Domain\Entities\Project;
 use App\V3\Domain\Repositories\SubjectRepositoryInterface;
 use App\Models\Subject as EloquentSubject;
 use Illuminate\Support\Facades\Log;
@@ -12,23 +13,106 @@ class EloquentSubjectRepository implements SubjectRepositoryInterface
 
     public function all(): array
     {
-        $subjectModels = EloquentSubject::all();
+        $subjectModels = EloquentSubject::with('projects')->get(); // Precargar proyectos
+        $subjects = [];
 
-        $latValue = $subjectModels->map(fn ($model) => $this->toDomain($model))->toArray();
+        foreach ($subjectModels as $subjectModel) {
+            $subject = new Subject(
+                $subjectModel->id,
+                $subjectModel->email,
+                $subjectModel->first_name,
+                $subjectModel->last_name,
+                $subjectModel->created_at,
+                $subjectModel->updated_at
+            );
 
-        return $latValue;
+            if ($subjectModel->projects) {
+                $projects = $subjectModel->projects->map(function ($projectModel) {
+                    return new Project(
+                        $projectModel->id,
+                        $projectModel->name,
+                        $projectModel->description,
+                        $projectModel->created_at,
+                        $projectModel->updated_at
+                    );
+                })->toArray();
+
+                $subject->setProjects($projects);
+            }
+
+            $subjects[] = $subject;
+        }
+
+        return $subjects;
     }
 
     public function findById(int $id): ?Subject
     {
-        $subjectModel = EloquentSubject::find($id);
-        return $subjectModel ? $this->toDomain($subjectModel) : null;
+        $subjectModel = EloquentSubject::with('projects')->find($id); 
+    
+        if (!$subjectModel) {
+            return null; 
+        }
+    
+        $subject = new Subject(
+            $subjectModel->id,
+            $subjectModel->email,
+            $subjectModel->first_name,
+            $subjectModel->last_name,
+            $subjectModel->created_at,
+            $subjectModel->updated_at
+        );
+    
+        if ($subjectModel->projects) {
+            $projects = $subjectModel->projects->map(function ($projectModel) {
+                return new Project(
+                    $projectModel->id,
+                    $projectModel->name,
+                    $projectModel->description,
+                    $projectModel->created_at,
+                    $projectModel->updated_at
+                );
+            })->toArray();
+    
+            $subject->setProjects($projects);
+        }
+    
+        return $subject;
     }
+    
 
     public function findByEmail(string $email): ?Subject
     {
-        $subjectModel = EloquentSubject::where('email', $email)->first();
-        return $subjectModel ? $this->toDomain($subjectModel) : null;
+        $subjectModel = EloquentSubject::with('projects')->where('email', $email)->first();
+    
+        if (!$subjectModel) {
+            return null; 
+        }
+    
+        $subject = new Subject(
+            $subjectModel->id,
+            $subjectModel->email,
+            $subjectModel->first_name,
+            $subjectModel->last_name,
+            $subjectModel->created_at,
+            $subjectModel->updated_at
+        );
+    
+        if ($subjectModel->projects) {
+            $projects = $subjectModel->projects->map(function ($projectModel) {
+                return new Project(
+                    $projectModel->id,
+                    $projectModel->name,
+                    $projectModel->description,
+                    $projectModel->created_at,
+                    $projectModel->updated_at
+                );
+            })->toArray();
+    
+            $subject->setProjects($projects);
+        }
+    
+        return $subject;
     }
 
     public function save(Subject $subject): void

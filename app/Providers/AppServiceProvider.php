@@ -8,6 +8,8 @@ use App\V3\Domain\Repositories\SubjectRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentSubjectRepository;
 use App\V3\Domain\Repositories\ProjectRepositoryInterface;
 use App\V3\Infrastructure\Persistence\EloquentProjectRepository;
+use App\V3\Domain\Repositories\SubjectsInProjectsRepositoryInterface;
+use App\V3\Infrastructure\Persistence\EloquentSubjectsInProjectsRepository;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(V2EventServiceProvider::class);
         $this->app->bind(SubjectRepositoryInterface::class, EloquentSubjectRepository::class);
         $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
+        $this->app->bind(SubjectsInProjectsRepositoryInterface::class, EloquentSubjectsInProjectsRepository::class);
     }
 
     /**

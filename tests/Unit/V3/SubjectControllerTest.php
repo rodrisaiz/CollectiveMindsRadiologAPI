@@ -45,7 +45,7 @@ class SubjectControllerTest extends TestCase
         $response->assertStatus(200)
                  ->assertJsonStructure([
                      'data' => [
-                         '*' => ['id', 'email', 'first_name', 'last_name', 'created_at', 'updated_at']
+                         '*' => ['id', 'email', 'first_name', 'last_name', 'created_at', 'updated_at', 'projects']
                      ]
                  ]);
     }

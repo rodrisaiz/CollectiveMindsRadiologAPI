@@ -39,21 +39,28 @@ class SubjectController
     {   
         $allSubjects = $this->AllSubject->execute();
 
-        if(!empty($allSubjects)){
+        if (!empty($allSubjects)) {
             return response()->json([
                 'data' => array_map(fn ($subject) => [
                     'id' => $subject->getId(),
                     'email' => $subject->getEmail(),
                     'first_name' => $subject->getFirstName(),
                     'last_name' => $subject->getLastName(),
-                    "created_at" => $subject->getCreatedAt(),
-                    "updated_at" => $subject->getUpdatedAt(),
+                    'created_at' => $subject->getCreatedAt(),
+                    'updated_at' => $subject->getUpdatedAt(),
+                    'projects' => array_map(fn ($project) => [
+                        'id' => $project->getId(),
+                        'name' => $project->getName(),
+                        'description' => $project->getDescription(),
+                        'created_at' => $project->getCreatedAt(),
+                        'updated_at' => $project->getUpdatedAt(),
+                    ], $subject->getProjects()),
                 ], $allSubjects)
-            ], 200);    
-        }else{
+            ], 200);
+        } else {
             return response()->json([
                 'message' => 'No subjects found',
-            ], 200);    
+            ], 200);
         }
         
     }
@@ -71,6 +78,13 @@ class SubjectController
                     'last_name' => $foundedSubject->getLastName(),
                     "created_at" => $foundedSubject->getCreatedAt(),
                     "updated_at" => $foundedSubject->getUpdatedAt(),
+                    'projects' => array_map(fn ($project) => [
+                        'id' => $project->getId(),
+                        'name' => $project->getName(),
+                        'description' => $project->getDescription(),
+                        'created_at' => $project->getCreatedAt(),
+                        'updated_at' => $project->getUpdatedAt(),
+                    ], $foundedSubject->getProjects()),
                 ],
             ], 200);    
         }else{
@@ -94,6 +108,13 @@ class SubjectController
                             'last_name' => $foundedSubject->getLastName(),
                             "created_at" => $foundedSubject->getCreatedAt(),
                             "updated_at" => $foundedSubject->getUpdatedAt(),
+                            'projects' => array_map(fn ($project) => [
+                                'id' => $project->getId(),
+                                'name' => $project->getName(),
+                                'description' => $project->getDescription(),
+                                'created_at' => $project->getCreatedAt(),
+                                'updated_at' => $project->getUpdatedAt(),
+                            ], $foundedSubject->getProjects()),
                         ]
                     ]
         ], 200);    
