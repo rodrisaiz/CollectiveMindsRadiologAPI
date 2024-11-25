@@ -7,5 +7,5 @@ use App\V3\Domain\Entities\Project;
 
 interface SubjectsInProjectsRepositoryInterface
 {
-    public function enroll(int $subjectId, int $projectId): ?Project;
+    public function enroll(int $subjectId, int $projectId);
 }

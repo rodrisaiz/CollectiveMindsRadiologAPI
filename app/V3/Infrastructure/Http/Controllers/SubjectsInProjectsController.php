@@ -30,7 +30,6 @@ class SubjectsInProjectsController
             return response()->json(['error' => 'Project or Subject not found'], 404);
 
         } catch (\Exception $e) {
-            Log::info(['test' =>$e->getMessage()]);
             return response()->json([
                 'error' => 'Error creating the assignment',
                 'message' => $e->getMessage()

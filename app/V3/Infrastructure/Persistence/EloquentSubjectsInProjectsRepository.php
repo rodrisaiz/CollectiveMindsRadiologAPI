@@ -7,12 +7,14 @@ use App\V3\Domain\Entities\Project;
 use App\V3\Domain\Repositories\SubjectsInProjectsRepositoryInterface;
 use App\Models\Project as EloquentProject;
 use App\Models\Subject as EloquentSubject;
+//use App\V3\Domain\Entities\Subject as EloquentProject;
+use Illuminate\Support\Facades\Log;
 
 class EloquentSubjectsInProjectsRepository implements SubjectsInProjectsRepositoryInterface
 {
-    public function enroll(int $subjectId, int $projectId): ?Project
+    public function enroll(int $subjectId, int $projectId)
     {
-        $subjectModel = EloquentSubject::find($subjectId);
+        $subjectModel = EloquentSubject::findOrFail($subjectId);
         $projectModel = EloquentProject::find($projectId);
 
         if ($subjectModel && $projectModel) {
@@ -23,6 +25,6 @@ class EloquentSubjectsInProjectsRepository implements SubjectsInProjectsReposito
             return   $subjectModel;
         }
 
-        //return null;
+        return null;
     }
 }

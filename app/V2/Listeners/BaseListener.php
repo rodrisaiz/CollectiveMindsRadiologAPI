@@ -18,14 +18,12 @@ class BaseListener
             'App\V2\Events\SubjectEvent' => 'subjectV2',
             default => null,
         };
-        Log::info(['Type = ' => $type]);
         if (!$type) {
             Log::error('Tipo de evento no reconocido.');
             return;
         }
 
         $webhook = Webhook::where('type', $type)->first();
-        Log::info(['webhook = ' => $webhook]);
         if (!$webhook || !$webhook->url) {
             Log::error("No se encontró un webhook configurado para el tipo \"{$type}\".");
             return;
