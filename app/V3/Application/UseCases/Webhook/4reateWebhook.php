@@ -16,19 +16,7 @@ class CreateWebhook
 
     public function execute(string $type, string $url): Webhook
     {
-        /*
-        $existingWebhook = $this->repository->findByType($type);
-
-        if ($existingWebhook) {
-            $webhook = Webhook::where('type', $type)->first();
-
-            $existingWebhook->setType($type);
-            $this->repository->save($existingWebhook);
-
-            $existingWebhook->setWasRecentlyCreated($existingWebhook->wasRecentlyCreated);
-            return $existingWebhook;
-        }
-*/
+    
         $Webhook = new Webhook(
             null,
             $type,
